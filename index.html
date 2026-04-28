@@ -3,1118 +3,1049 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unilever — Dashboard Ejecutivo</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<title>+Marka × Unilever — Dashboard Ejecutivo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg-primary:#0a0d14;--bg-secondary:#111520;--bg-card:#161b2e;--bg-card-hover:#1c2338;
-  --border:rgba(255,255,255,0.07);--border-accent:rgba(0,210,255,0.25);
-  --text-primary:#f0f4ff;--text-secondary:#8892aa;--text-muted:#4a5568;
-  --accent-blue:#00d2ff;--accent-teal:#00e6a0;--accent-gold:#ffc94d;--accent-rose:#ff6b8a;--accent-purple:#a78bfa;
-  --unilever-red:#e8003d;--unilever-blue:#1f36c7;
-  --sidebar-width:220px;--header-h:64px;--radius:14px;--radius-sm:8px;
-  --shadow:0 4px 24px rgba(0,0,0,0.4);--shadow-glow:0 0 30px rgba(0,210,255,0.08);
+  --bg:#0c0e12;--bg2:#13161d;--bg3:#191d27;--bg4:#1f2435;
+  --border:rgba(255,255,255,0.06);--border2:rgba(182,150,90,0.3);
+  --gold:#b6965a;--gold2:#d4b07a;--gold3:#f0d4a0;
+  --silver:#8a9ab5;--silver2:#bcc8d8;
+  --text:#e8ecf4;--text2:#8a9ab5;--text3:#4a5568;
+  --red:#c0392b;--green:#27ae60;--amber:#d4861a;
+  --sidebar:220px;--topbar:58px;--filters:52px;
+  --r:4px;--r2:8px;
+  --shadow:0 2px 20px rgba(0,0,0,0.5);
+  --glow:0 0 30px rgba(182,150,90,0.08);
 }
-[data-theme="light"]{
-  --bg-primary:#f0f2f8;--bg-secondary:#e4e8f4;--bg-card:#ffffff;--bg-card-hover:#f7f9ff;
-  --border:rgba(0,0,0,0.08);--border-accent:rgba(31,54,199,0.2);
-  --text-primary:#0d1326;--text-secondary:#4a5580;--text-muted:#9aa3b8;
-  --accent-blue:#1f36c7;--accent-teal:#00a870;--accent-gold:#e09000;--accent-rose:#e03060;--accent-purple:#7c5fe6;
-  --shadow:0 4px 20px rgba(0,0,0,0.08);--shadow-glow:0 0 20px rgba(31,54,199,0.06);
+[data-theme=light]{
+  --bg:#f5f4f0;--bg2:#edebe5;--bg3:#e5e2d8;--bg4:#dcd9cf;
+  --border:rgba(0,0,0,0.08);--border2:rgba(140,100,40,0.3);
+  --gold:#8c6428;--gold2:#a07832;--gold3:#5a3c10;
+  --silver:#4a5870;--silver2:#2a3850;
+  --text:#1a1e2a;--text2:#4a5870;--text3:#8a96a8;
+  --shadow:0 2px 16px rgba(0,0,0,0.1);
+  --glow:0 0 20px rgba(140,100,40,0.06);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;display:flex;flex-direction:column;font-size:13px;transition:background 0.3s,color 0.3s}
+html{font-size:13px}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow-x:hidden}
 
-/* TOPBAR */
-.topbar{height:var(--header-h);background:var(--bg-secondary);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
-.logo-area{display:flex;align-items:center;gap:12px}
-.logo-u{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--unilever-blue),var(--unilever-red));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:#fff;letter-spacing:-1px}
-.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.5px}
-.logo-sub{font-size:10px;color:var(--text-secondary);font-weight:400;letter-spacing:1.5px;text-transform:uppercase}
-.topbar-center{flex:1;display:flex;align-items:center;justify-content:center;gap:8px}
-.topbar-badge{background:rgba(0,210,255,0.1);border:1px solid var(--border-accent);color:var(--accent-blue);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.5px}
-[data-theme="light"] .topbar-badge{background:rgba(31,54,199,0.08)}
-.topbar-actions{display:flex;align-items:center;gap:8px}
-.btn-icon{height:34px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:13px;padding:0 10px;gap:5px;white-space:nowrap;font-family:'DM Sans',sans-serif;font-weight:500}
-.btn-icon:hover{background:var(--bg-card-hover);color:var(--text-primary);border-color:var(--border-accent)}
-.btn-theme{background:rgba(0,210,255,0.08);border-color:var(--border-accent);color:var(--accent-blue);font-weight:600}
-[data-theme="light"] .btn-theme{background:rgba(31,54,199,0.08)}
-.live-dot{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--accent-teal);font-weight:500}
-.live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent-teal);box-shadow:0 0 8px var(--accent-teal);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.3)}}
+/* ═══ SPLASH SCREEN ═══ */
+#splash{position:fixed;inset:0;background:#0a0b0e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease,visibility .6s ease}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
+.splash-marka{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#4a5568;margin-bottom:8px}
+.splash-main-logo{display:flex;align-items:center;gap:14px;animation:fadeUp .8s ease both}
+.splash-icon{width:52px;height:52px;border:1px solid #b6965a;display:flex;align-items:center;justify-content:center;position:relative}
+.splash-icon::before{content:'';position:absolute;inset:3px;border:1px solid rgba(182,150,90,0.3)}
+.splash-icon svg{width:28px;height:28px;fill:#b6965a}
+.splash-name{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:#e8ecf4;letter-spacing:2px}
+.splash-divider{width:1px;height:60px;background:linear-gradient(to bottom,transparent,#b6965a,transparent);animation:fadeUp .8s .2s ease both;opacity:0}
+.splash-divider.show{opacity:1}
+.splash-client{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:300;letter-spacing:10px;text-transform:uppercase;color:#8a9ab5;animation:fadeUp .8s .3s ease both;opacity:0}
+.splash-client.show{opacity:1}
+.splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#4a5568;margin-top:8px;animation:fadeUp .8s .5s ease both;opacity:0}
+.splash-sub.show{opacity:1}
+.splash-bar{width:180px;height:1px;background:rgba(255,255,255,0.06);margin-top:40px;overflow:hidden;animation:fadeUp .8s .4s ease both;opacity:0}
+.splash-bar.show{opacity:1}
+.splash-progress{height:100%;width:0;background:linear-gradient(90deg,transparent,#b6965a,transparent);animation:load 2s ease forwards 0.6s}
+@keyframes load{to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-/* FILTERS */
-.filters-bar{background:var(--bg-secondary);border-bottom:1px solid var(--border);display:flex;align-items:center;flex-wrap:wrap;padding:10px 24px 10px calc(var(--sidebar-width)+24px);gap:8px;position:sticky;top:var(--header-h);z-index:99}
-.filter-group{display:flex;align-items:center;gap:5px}
-.filter-label{font-size:9px;color:var(--text-muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
-.filter-select{background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary);padding:5px 8px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;outline:none;transition:border-color 0.2s;max-width:130px}
-.filter-select:hover,.filter-select:focus{border-color:var(--border-accent)}
-.filter-select option{background:var(--bg-card)}
-.btn-reset{background:linear-gradient(135deg,var(--unilever-blue),#3b5bdb);color:#fff;border:none;padding:6px 12px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;margin-left:4px}
-.btn-reset:hover{opacity:0.85}
-.filter-active-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 24px 6px calc(var(--sidebar-width)+24px);background:var(--bg-secondary);border-bottom:1px solid var(--border)}
-.filter-tag{background:rgba(0,210,255,0.1);border:1px solid var(--border-accent);color:var(--accent-blue);padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:5px}
-.filter-tag button{background:none;border:none;color:inherit;cursor:pointer;font-size:11px;padding:0;line-height:1}
+/* ═══ TOPBAR ═══ */
+.topbar{height:var(--topbar);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100}
+.logo-area{display:flex;align-items:center;gap:12px;min-width:0}
+.logo-mark{width:30px;height:30px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px;fill:var(--gold)}
+.logo-texts{}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:.5px}
+.logo-sub{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);font-weight:400}
+.topbar-center{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.section-badge{background:transparent;border:1px solid var(--border2);color:var(--gold);padding:3px 14px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+.live-indicator{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text3);letter-spacing:1px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.topbar-unilever{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:var(--text3);letter-spacing:2px;text-transform:uppercase;padding:0 10px;border-left:1px solid var(--border)}
+.btn-top{height:30px;padding:0 12px;background:transparent;border:1px solid var(--border);color:var(--text2);font-family:'Barlow',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+.btn-top:hover{border-color:var(--border2);color:var(--gold)}
+.btn-top.gold{border-color:var(--border2);color:var(--gold)}
 
-/* LAYOUT */
+/* ═══ FILTERS ═══ */
+.filters-bar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;flex-wrap:wrap;padding:8px 20px 8px calc(var(--sidebar)+20px);gap:10px;position:sticky;top:var(--topbar);z-index:99;min-height:var(--filters)}
+.fg{display:flex;align-items:center;gap:5px}
+.fl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Barlow Condensed',sans-serif;font-weight:600;white-space:nowrap}
+.fs{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:4px 8px;font-family:'Barlow',sans-serif;font-size:11px;cursor:pointer;outline:none;transition:border-color .2s;min-width:110px;-webkit-appearance:none;border-radius:var(--r)}
+.fs:hover,.fs:focus{border-color:var(--border2)}
+.fs option{background:var(--bg3)}
+.btn-reset{background:transparent;border:1px solid var(--border2);color:var(--gold);padding:4px 12px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;margin-left:6px}
+.btn-reset:hover{background:rgba(182,150,90,0.08)}
+.active-filters-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:5px 20px 5px calc(var(--sidebar)+20px);display:none;align-items:center;gap:6px;flex-wrap:wrap}
+.active-filters-bar.show{display:flex}
+.af-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Barlow Condensed',sans-serif}
+.af-chip{border:1px solid var(--border2);color:var(--gold);padding:2px 10px;font-size:9px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-weight:600;text-transform:uppercase;background:rgba(182,150,90,0.05)}
+
+/* ═══ LAYOUT ═══ */
 .main-layout{display:flex;flex:1}
 
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-width);flex-shrink:0;background:var(--bg-secondary);border-right:1px solid var(--border);position:sticky;top:calc(var(--header-h)+80px);height:calc(100vh - var(--header-h) - 80px);overflow-y:auto;padding:16px 0;display:flex;flex-direction:column}
+/* ═══ SIDEBAR ═══ */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:calc(var(--topbar)+var(--filters));height:calc(100vh - var(--topbar) - var(--filters));overflow-y:auto;display:flex;flex-direction:column}
 .sidebar::-webkit-scrollbar{width:2px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--border)}
-.sidebar-section{font-size:9px;color:var(--text-muted);font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0 16px;margin:10px 0 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;color:var(--text-secondary);font-size:13px;font-weight:400;transition:all 0.15s;border-left:3px solid transparent}
-.nav-item:hover{color:var(--text-primary);background:var(--bg-card)}
-.nav-item.active{color:var(--accent-blue);background:rgba(0,210,255,0.06);border-left-color:var(--accent-blue);font-weight:600}
-[data-theme="light"] .nav-item.active{background:rgba(31,54,199,0.06)}
-.nav-icon{font-size:14px;width:18px;text-align:center}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
+.sb-section{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);padding:14px 16px 5px;font-family:'Barlow Condensed',sans-serif;font-weight:600;border-top:1px solid var(--border)}
+.sb-section:first-child{border-top:none}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;color:var(--text2);font-size:12px;font-weight:400;transition:all .15s;border-left:2px solid transparent;letter-spacing:.3px}
+.nav-item:hover{color:var(--text);background:var(--bg3)}
+.nav-item.active{color:var(--gold);background:rgba(182,150,90,0.06);border-left-color:var(--gold);font-weight:600}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.sidebar-brand{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.sb-brand-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+.sb-brand-name{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold2);letter-spacing:1px}
 
-/* CONTENT */
-.content{flex:1;padding:20px 24px;overflow-x:hidden;min-width:0}
+/* ═══ CONTENT ═══ */
+.content{flex:1;padding:20px 22px;min-width:0;overflow-x:hidden}
 .section{display:none}
 .section.active{display:block}
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700}
-.page-subtitle{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.page-actions{display:flex;gap:8px}
-.btn-export{display:flex;align-items:center;gap:6px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-secondary);padding:7px 14px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s}
-.btn-export:hover{border-color:var(--border-accent);color:var(--text-primary)}
-.btn-export.primary{background:var(--unilever-blue);color:#fff;border-color:var(--unilever-blue)}
-.btn-export.primary:hover{opacity:0.85}
 
-/* KPIs */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:20px}
-.kpi-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:all 0.2s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--accent-blue))}
-.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-glow);border-color:var(--border-accent)}
-.kpi-icon{font-size:18px;margin-bottom:8px}
-.kpi-label{font-size:10px;color:var(--text-muted);font-weight:600;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px}
-.kpi-value{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1}
-.kpi-value span{font-size:13px;font-weight:500;color:var(--text-secondary)}
-.kpi-delta{font-size:11px;font-weight:600;margin-top:6px;display:flex;align-items:center;gap:3px}
-.kpi-delta.up{color:var(--accent-teal)}.kpi-delta.down{color:var(--accent-rose)}.kpi-delta.neutral{color:var(--accent-gold)}
+/* ═══ PAGE HEADER ═══ */
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.page-hdr-left{}
+.page-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:4px}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--text);line-height:1}
+.page-sub{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:.3px}
+.page-hdr-right{display:flex;gap:8px;align-items:center}
+.btn-act{height:30px;padding:0 14px;background:transparent;border:1px solid var(--border);color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.btn-act:hover{border-color:var(--border2);color:var(--gold)}
+.btn-act.primary{border-color:var(--gold);color:var(--gold);background:rgba(182,150,90,0.06)}
+.btn-act.primary:hover{background:rgba(182,150,90,0.12)}
 
-/* CHARTS */
-.charts-row{display:grid;gap:16px;margin-bottom:16px}
+/* ═══ KPI GRID ═══ */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+.kpi{background:var(--bg3);border:1px solid var(--border);padding:14px 16px;position:relative;overflow:hidden;transition:all .2s;cursor:default}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--kc,var(--gold))}
+.kpi:hover{border-color:var(--border2);box-shadow:var(--glow)}
+.kpi-eye{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-bottom:6px}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:600;line-height:1;color:var(--text)}
+.kpi-val small{font-size:12px;font-weight:400;color:var(--text2)}
+.kpi-delta{font-size:10px;font-weight:500;margin-top:5px;display:flex;align-items:center;gap:3px;font-family:'Barlow Condensed',sans-serif}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--amber)}
+
+/* ═══ CHART CARD ═══ */
+.charts-row{display:grid;gap:14px;margin-bottom:14px}
 .charts-2{grid-template-columns:1fr 1fr}
-
-/* CARD with tooltip */
-.card-wrap{position:relative}
-.chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:box-shadow 0.2s;position:relative}
-.chart-card:hover{box-shadow:var(--shadow-glow)}
-.chart-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:8px}
-.chart-header-left{}
-.chart-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
-.chart-subtitle{font-size:11px;color:var(--text-secondary);margin-top:2px}
-.chart-legend{display:flex;gap:14px;font-size:11px;flex-shrink:0}
-.chart-legend-item{display:flex;align-items:center;gap:5px;color:var(--text-secondary)}
-.chart-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.charts-3{grid-template-columns:2fr 1fr}
+.ccard{background:var(--bg3);border:1px solid var(--border);padding:18px;position:relative;transition:box-shadow .2s}
+.ccard:hover{box-shadow:var(--glow)}
+.ccard-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:8px}
+.ccard-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text)}
+.ccard-sub{font-size:10px;color:var(--text2);margin-top:2px;letter-spacing:.3px}
+.ccard-legend{display:flex;gap:12px;font-size:10px;align-items:center;flex-shrink:0}
+.cl-item{display:flex;align-items:center;gap:4px;color:var(--text2);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;font-size:10px}
+.cl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .chart-wrap{position:relative}
 
-/* INFO BUTTON */
-.info-btn{width:22px;height:22px;border-radius:50%;background:rgba(0,210,255,0.12);border:1px solid var(--border-accent);color:var(--accent-blue);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.info-btn:hover{background:rgba(0,210,255,0.25);transform:scale(1.1)}
-[data-theme="light"] .info-btn{background:rgba(31,54,199,0.08)}
+/* ═══ INFO BUTTON + POPUP ═══ */
+.info-btn{width:20px;height:20px;border:1px solid var(--border2);color:var(--gold);font-size:10px;font-weight:700;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-family:'Barlow',sans-serif}
+.info-btn:hover{background:rgba(182,150,90,0.1)}
+.info-popup{display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:var(--bg3);z-index:20;padding:18px;border:1px solid var(--border2);flex-direction:column}
+.info-popup.vis{display:flex}
+.ip-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;line-height:1;transition:color .2s}
+.ip-close:hover{color:var(--gold)}
+.ip-eye{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:'Barlow Condensed',sans-serif;margin-bottom:8px}
+.ip-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:10px}
+.ip-body{font-size:12px;color:var(--text2);line-height:1.7;flex:1}
+.ip-filter{margin-top:12px;padding:8px 10px;border:1px solid var(--border);background:var(--bg4);font-size:10px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px}
+.ip-filter span{color:var(--gold2);font-weight:600}
 
-/* INFO TOOLTIP OVERLAY */
-.info-overlay{display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:var(--bg-card);border-radius:var(--radius);z-index:10;padding:20px;border:1px solid var(--border-accent);flex-direction:column;justify-content:center;align-items:flex-start}
-.info-overlay.visible{display:flex}
-.info-overlay-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent-blue);margin-bottom:10px}
-.info-overlay-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
-.info-overlay-close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;line-height:1;padding:2px 6px;border-radius:4px}
-.info-overlay-close:hover{color:var(--text-primary)}
-.info-overlay-filter{font-size:11px;color:var(--accent-teal);margin-top:12px;background:rgba(0,230,160,0.08);padding:6px 10px;border-radius:6px;border:1px solid rgba(0,230,160,0.2)}
+/* ═══ TABLE ═══ */
+.dtable{width:100%;border-collapse:collapse;font-size:11px}
+.dtable th{text-align:left;padding:8px 10px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;white-space:nowrap}
+.dtable tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+.dtable tbody tr:hover{background:var(--bg4)}
+.dtable td{padding:8px 10px;color:var(--text2);vertical-align:middle}
+.dtable td:first-child{color:var(--text);font-weight:500}
+.tu{color:var(--gold)!important;font-weight:600!important}
+.tc{color:var(--silver2)!important}
+.sep-col{border-left:1px solid var(--border2)!important}
 
-/* FILTER SUMMARY */
-.filter-summary{background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:5px 24px 5px calc(var(--sidebar-width)+24px);display:none;align-items:center;gap:8px;flex-wrap:wrap}
-.filter-summary.has-filters{display:flex}
-.filter-summary-label{font-size:9px;color:var(--text-muted);font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.filter-chip{background:rgba(0,210,255,0.1);border:1px solid var(--border-accent);color:var(--accent-blue);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600}
+/* ═══ BADGES ═══ */
+.badge{display:inline-flex;align-items:center;padding:1px 7px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+.bg{background:rgba(39,174,96,.1);color:#27ae60;border:1px solid rgba(39,174,96,.2)}
+.br{background:rgba(192,57,43,.1);color:#e74c3c;border:1px solid rgba(192,57,43,.2)}
+.ba{background:rgba(212,134,26,.1);color:#d4861a;border:1px solid rgba(212,134,26,.2)}
+.bb{background:rgba(182,150,90,.1);color:var(--gold);border:1px solid var(--border2)}
 
-/* TABLE */
-.data-table{width:100%;border-collapse:collapse;font-size:12px}
-.data-table thead th{text-align:left;padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap}
-.data-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
-.data-table tbody tr:hover{background:var(--bg-card-hover)}
-.data-table tbody td{padding:9px 12px;color:var(--text-secondary);vertical-align:middle}
-.data-table tbody td:first-child{color:var(--text-primary);font-weight:500}
-.comp-unilever{color:var(--unilever-blue)!important;font-weight:600!important}
-.comp-rival{color:var(--accent-rose)!important}
+/* ═══ PROGRESS ═══ */
+.pbar{background:var(--bg);height:4px;overflow:hidden}
+.pfill{height:100%;transition:width 1s ease}
+.pf-g{background:var(--green)}.pf-a{background:var(--amber)}.pf-r{background:var(--red)}.pf-b{background:var(--gold)}
 
-/* BADGES */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
-.badge-green{background:rgba(0,230,160,0.12);color:var(--accent-teal)}
-.badge-red{background:rgba(255,107,138,0.12);color:var(--accent-rose)}
-.badge-gold{background:rgba(255,201,77,0.12);color:var(--accent-gold)}
-.badge-blue{background:rgba(0,210,255,0.12);color:var(--accent-blue)}
-.badge-purple{background:rgba(167,139,250,0.12);color:var(--accent-purple)}
+/* ═══ ALERTS ═══ */
+.alerts-wrap{display:flex;flex-direction:column;gap:6px}
+.alert-row{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border:1px solid var(--border);background:var(--bg4);transition:all .2s}
+.alert-row:hover{border-color:var(--border2)}
+.alert-row.crit{border-left:2px solid var(--red)}
+.alert-row.warn{border-left:2px solid var(--amber)}
+.alert-row.ok{border-left:2px solid var(--green)}
+.alert-row.inf{border-left:2px solid var(--gold)}
+.ai{font-size:14px;flex-shrink:0}
+.at{font-size:11px;font-weight:600;color:var(--text);font-family:'Barlow Condensed',sans-serif;letter-spacing:.3px;text-transform:uppercase;font-size:10px}
+.ad{font-size:10px;color:var(--text2);margin-top:1px;line-height:1.4}
 
-/* PROGRESS */
-.progress-bar{background:var(--bg-primary);border-radius:20px;height:6px;overflow:hidden}
-.progress-fill{height:100%;border-radius:20px;background:var(--accent-blue);transition:width 1s ease}
-.progress-fill.green{background:var(--accent-teal)}.progress-fill.gold{background:var(--accent-gold)}.progress-fill.rose{background:var(--accent-rose)}
+/* ═══ RANK ═══ */
+.rank-wrap{display:flex;flex-direction:column;gap:4px}
+.rank-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.rn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;color:var(--text3);width:16px;flex-shrink:0}
+.rinfo{flex:1;min-width:0}
+.rname{font-size:11px;font-weight:500;color:var(--text)}
+.rchain{font-size:9px;color:var(--text3);letter-spacing:.5px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase}
+.rscore{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap}
 
-/* ALERTS */
-.alerts-grid{display:flex;flex-direction:column;gap:8px}
-.alert-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-secondary);transition:all 0.2s}
-.alert-item:hover{border-color:var(--border-accent);background:var(--bg-card-hover)}
-.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.alert-title{font-size:12px;font-weight:600;color:var(--text-primary)}
-.alert-desc{font-size:11px;color:var(--text-secondary);margin-top:2px}
-.alert-item.critical{border-left:3px solid var(--accent-rose)}
-.alert-item.warning{border-left:3px solid var(--accent-gold)}
-.alert-item.success{border-left:3px solid var(--accent-teal)}
-.alert-item.info{border-left:3px solid var(--accent-blue)}
-
-/* RANK */
-.rank-list{display:flex;flex-direction:column;gap:4px}
-.rank-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-.rank-num{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-muted);width:20px}
-.rank-info{flex:1;min-width:0}
-.rank-name{font-size:12px;font-weight:500;color:var(--text-primary)}
-.rank-chain{font-size:10px;color:var(--text-muted)}
-.rank-score{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);white-space:nowrap;text-align:right}
-
-/* CONFIG */
-.config-section{max-width:600px}
-.config-group{margin-bottom:24px}
-.config-group-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.config-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.config-label{font-size:13px;color:var(--text-secondary)}
-.config-label span{display:block;font-size:11px;color:var(--text-muted);margin-top:2px}
-.toggle{width:44px;height:24px;background:var(--bg-primary);border:1px solid var(--border);border-radius:20px;cursor:pointer;position:relative;transition:all 0.25s;flex-shrink:0}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--text-muted);transition:all 0.25s}
-.toggle.on{background:var(--accent-blue);border-color:var(--accent-blue)}
-.toggle.on::after{left:calc(100% - 19px);background:#fff}
-
-/* COMP SECTION */
-.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px}
-.comp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:all 0.2s}
-.comp-card:hover{border-color:var(--border-accent);transform:translateY(-1px)}
-.comp-logo{font-size:22px;margin-bottom:6px}
-.comp-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary)}
-.comp-cat{font-size:10px;color:var(--text-muted);margin-top:1px}
-.comp-share{font-size:11px;font-weight:600;color:var(--accent-rose);margin-top:6px}
-
-::-webkit-scrollbar{width:5px;height:5px}
+/* ═══ SCROLL ═══ */
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
-::-webkit-scrollbar-thumb:hover{background:var(--border-accent)}
-@keyframes shimmerVal{0%,100%{opacity:1}50%{opacity:0.7}}
-.live-val{animation:shimmerVal 3s ease-in-out infinite}
-.content,.sidebar,.topbar,.filters-bar{transition:background 0.3s,border-color 0.3s}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ═══ ANIMS ═══ */
+@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.7}}
+.live-val{animation:shimmer 3s ease-in-out infinite}
+.content,.sidebar,.topbar,.filters-bar{transition:background .3s,border-color .3s,color .3s}
 
 @media(max-width:900px){
-  .charts-2{grid-template-columns:1fr}
+  .charts-2,.charts-3{grid-template-columns:1fr}
   .sidebar{display:none}
-  .filters-bar,.filter-summary{padding-left:24px}
+  .filters-bar,.active-filters-bar{padding-left:20px}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<header class="topbar">
-  <div class="logo-area">
-    <div class="logo-u">U</div>
-    <div>
-      <div class="logo-text">Unilever</div>
-      <div class="logo-sub">Intelligence Dashboard</div>
+<!-- ═══════ SPLASH ═══════ -->
+<div id="splash">
+  <div class="splash-logo-wrap">
+    <div class="splash-marka">Desarrollado por</div>
+    <div class="splash-main-logo">
+      <div class="splash-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/></svg>
+      </div>
+      <div class="splash-name">+Marka</div>
+    </div>
+    <div class="splash-divider show"></div>
+    <div class="splash-client show">UNILEVER</div>
+    <div class="splash-sub show">Intelligence Dashboard · 2026</div>
+    <div class="splash-bar show">
+      <div class="splash-progress"></div>
     </div>
   </div>
-  <div class="topbar-center">
-    <div class="topbar-badge" id="badge-category">Resumen Ejecutivo</div>
-    <div class="live-dot" id="live-time">En vivo</div>
+</div>
+
+<!-- ═══════ TOPBAR ═══════ -->
+<header class="topbar">
+  <div class="logo-area">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/></svg>
+    </div>
+    <div class="logo-texts">
+      <div class="logo-name">+Marka</div>
+      <div class="logo-sub">Intelligence Platform</div>
+    </div>
   </div>
-  <div class="topbar-actions">
-    <button class="btn-icon btn-theme" onclick="toggleTheme()" id="themeBtn">🌙 Modo Noche</button>
-    <button class="btn-icon" onclick="alert('Generando PDF ejecutivo...')">📄 PDF</button>
-    <button class="btn-icon" onclick="alert('Descargando Excel...')">📊 Excel</button>
+
+  <div class="topbar-center">
+    <div class="section-badge" id="badge-section">Dashboard</div>
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span id="live-time">En vivo</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <button class="btn-top" onclick="alert('Generando PDF...')">⬇ PDF</button>
+    <button class="btn-top" onclick="alert('Descargando Excel...')">⊞ Excel</button>
+    <button class="btn-top gold" id="themeBtn" onclick="toggleTheme()">◑ Noche</button>
+    <div class="topbar-unilever">Unilever</div>
   </div>
 </header>
 
-<!-- FILTERS BAR -->
+<!-- ═══════ FILTERS ═══════ -->
 <div class="filters-bar">
-  <div class="filter-group">
-    <span class="filter-label">Fecha</span>
-    <select class="filter-select" id="f-fecha" onchange="applyFilters()">
+  <div class="fg">
+    <span class="fl">Fecha</span>
+    <select class="fs" id="f-fecha" onchange="applyFilters()">
       <option value="">Todas</option>
-      <option value="Abr 2026">Abr 2026</option>
-      <option value="Mar 2026">Mar 2026</option>
-      <option value="Feb 2026">Feb 2026</option>
-      <option value="Ene 2026">Ene 2026</option>
+      <option>Abr 2026</option><option>Mar 2026</option><option>Feb 2026</option><option>Ene 2026</option>
     </select>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Cadena</span>
-    <select class="filter-select" id="f-cadena" onchange="applyFilters()">
+  <div class="fg">
+    <span class="fl">Cadena</span>
+    <select class="fs" id="f-cadena" onchange="applyFilters()">
       <option value="">Todas</option>
-      <option value="SuperSeis">SuperSeis</option>
-      <option value="CasaRica">Casa Rica</option>
-      <option value="Arete">Areté</option>
-      <option value="SuperMas">SuperMás</option>
-      <option value="Stock">Stock</option>
-      <option value="Farmacias">Farmacias</option>
+      <option>SuperSeis</option><option>Casa Rica</option><option>Areté</option>
+      <option>SuperMás</option><option>Stock</option><option>Farmacias</option>
     </select>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Categoría</span>
-    <select class="filter-select" id="f-cat" onchange="applyFilters()">
+  <div class="fg">
+    <span class="fl">Categoría</span>
+    <select class="fs" id="f-cat" onchange="applyFilters()">
       <option value="">Todas</option>
-      <option value="Cuidado Personal">Cuidado Personal</option>
-      <option value="Condimentos">Condimentos</option>
-      <option value="Limpieza">Limpieza</option>
-      <option value="Alimentos">Alimentos</option>
+      <option>Cuidado Personal</option><option>Condimentos</option>
+      <option>Limpieza</option><option>Alimentos</option>
     </select>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Ciudad</span>
-    <select class="filter-select" id="f-ciudad" onchange="applyFilters()">
+  <div class="fg">
+    <span class="fl">Ciudad</span>
+    <select class="fs" id="f-ciudad" onchange="applyFilters()">
       <option value="">Todas</option>
-      <option value="Asunción">Asunción</option>
-      <option value="Gran Asunción">Gran Asunción</option>
-      <option value="Luque">Luque</option>
-      <option value="San Lorenzo">San Lorenzo</option>
-      <option value="Lambaré">Lambaré</option>
-      <option value="Encarnación">Encarnación</option>
-      <option value="Ciudad del Este">Ciudad del Este</option>
+      <option>Asunción</option><option>Gran Asunción</option><option>Luque</option>
+      <option>San Lorenzo</option><option>Lambaré</option><option>Encarnación</option><option>Cde</option>
     </select>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Canal</span>
-    <select class="filter-select" id="f-canal" onchange="applyFilters()">
+  <div class="fg">
+    <span class="fl">Canal</span>
+    <select class="fs" id="f-canal" onchange="applyFilters()">
       <option value="">Todos</option>
-      <option value="Supermercados">Supermercados</option>
-      <option value="Hipermercados">Hipermercados</option>
-      <option value="Farmacias">Farmacias</option>
-      <option value="Minimarkets">Minimarkets</option>
-      <option value="Canal Tradicional">Canal Tradicional</option>
+      <option>Supermercados</option><option>Hipermercados</option>
+      <option>Farmacias</option><option>Minimarkets</option><option>Tradicional</option>
     </select>
   </div>
   <button class="btn-reset" onclick="resetFilters()">↺ Restablecer</button>
 </div>
-
-<!-- FILTER SUMMARY BAR -->
-<div class="filter-summary" id="filterSummary">
-  <span class="filter-summary-label">Filtros activos:</span>
-  <div id="filterChips"></div>
+<div class="active-filters-bar" id="afBar">
+  <span class="af-label">Activos:</span>
+  <span id="afChips"></span>
 </div>
 
-<!-- MAIN LAYOUT -->
+<!-- ═══════ MAIN ═══════ -->
 <div class="main-layout">
   <nav class="sidebar">
-    <div class="sidebar-section">Principal</div>
-    <div class="nav-item active" onclick="navTo('resumen')" id="nav-resumen"><span class="nav-icon">📋</span> Resumen Ejecutivo</div>
-    <div class="sidebar-section">Categorías</div>
-    <div class="nav-item" onclick="navTo('cuidado')" id="nav-cuidado"><span class="nav-icon">✨</span> Cuidado Personal</div>
-    <div class="nav-item" onclick="navTo('condimentos')" id="nav-condimentos"><span class="nav-icon">🌶️</span> Condimentos</div>
-    <div class="nav-item" onclick="navTo('limpieza')" id="nav-limpieza"><span class="nav-icon">🧹</span> Limpieza</div>
-    <div class="nav-item" onclick="navTo('alimentos')" id="nav-alimentos"><span class="nav-icon">🍽️</span> Alimentos</div>
-    <div class="sidebar-section">Analítica</div>
-    <div class="nav-item" onclick="navTo('pricing')" id="nav-pricing"><span class="nav-icon">💲</span> Pricing</div>
-    <div class="nav-item" onclick="navTo('disponibilidad')" id="nav-disponibilidad"><span class="nav-icon">📦</span> Disponibilidad</div>
-    <div class="nav-item" onclick="navTo('competencia')" id="nav-competencia"><span class="nav-icon">⚔️</span> Competencia</div>
-    <div class="sidebar-section">Sistema</div>
-    <div class="nav-item" onclick="navTo('config')" id="nav-config"><span class="nav-icon">⚙️</span> Configuración</div>
+    <div class="sb-section">Principal</div>
+    <div class="nav-item active" onclick="navTo('exec')" id="nav-exec"><span class="nav-icon">▣</span>Resumen</div>
+    <div class="sb-section">Categorías</div>
+    <div class="nav-item" onclick="navTo('cuidado')" id="nav-cuidado"><span class="nav-icon">◈</span>Cuidado Personal</div>
+    <div class="nav-item" onclick="navTo('condimentos')" id="nav-condimentos"><span class="nav-icon">◈</span>Condimentos</div>
+    <div class="nav-item" onclick="navTo('limpieza')" id="nav-limpieza"><span class="nav-icon">◈</span>Limpieza</div>
+    <div class="nav-item" onclick="navTo('alimentos')" id="nav-alimentos"><span class="nav-icon">◈</span>Alimentos</div>
+    <div class="sb-section">Analítica</div>
+    <div class="nav-item" onclick="navTo('pricing')" id="nav-pricing"><span class="nav-icon">◎</span>Pricing</div>
+    <div class="nav-item" onclick="navTo('competencia')" id="nav-competencia"><span class="nav-icon">◎</span>Competencia</div>
+    <div class="sidebar-brand">
+      <span class="sb-brand-label">Powered by</span>
+      <span class="sb-brand-name">+Marka Intelligence</span>
+    </div>
   </nav>
 
   <main class="content">
 
-    <!-- ══════════════ RESUMEN EJECUTIVO ══════════════ -->
-    <div class="section active" id="sec-resumen">
-      <div class="page-header">
-        <div>
-          <div class="page-title" id="resumen-title">Resumen Ejecutivo</div>
-          <div class="page-subtitle" id="resumen-subtitle">Todas las categorías · Ene–Abr 2026</div>
+    <!-- ═══ RESUMEN EJECUTIVO ═══ -->
+    <div class="section active" id="sec-exec">
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Vista general</div>
+          <div class="page-title" id="exec-title">Performance Comercial</div>
+          <div class="page-sub" id="exec-sub">Todas las categorías · Ene–Abr 2026</div>
         </div>
-        <div class="page-actions">
-          <button class="btn-export" onclick="alert('Exportando PDF...')">⬇️ PDF</button>
-          <button class="btn-export primary" onclick="alert('Descargando Excel...')">📊 Excel</button>
+        <div class="page-hdr-right">
+          <button class="btn-act" onclick="alert('PDF...')">⬇ PDF</button>
+          <button class="btn-act primary" onclick="alert('Excel...')">⊞ Excel</button>
         </div>
       </div>
 
-      <!-- KPIs dinámicos -->
-      <div class="kpi-grid" id="kpi-resumen">
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-icon">🏪</div><div class="kpi-label">Locales monitoreados</div><div class="kpi-value live-val" id="kv-locales">428</div><div class="kpi-delta up">▲ +14 vs mes ant.</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-icon">🔗</div><div class="kpi-label">Cadenas activas</div><div class="kpi-value live-val" id="kv-cadenas">6</div><div class="kpi-delta neutral">→ sin cambio</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-icon">💰</div><div class="kpi-label">Precio prom. Unilever</div><div class="kpi-value live-val" id="kv-precio-uni"><span>₲</span> 32.500</div><div class="kpi-delta up">▲ +2,1% vs comp.</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-icon">🏷️</div><div class="kpi-label">Precio prom. Competencia</div><div class="kpi-value live-val" id="kv-precio-comp"><span>₲</span> 30.900</div><div class="kpi-delta down">▼ Referencia</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-icon">✅</div><div class="kpi-label">Disponibilidad prom.</div><div class="kpi-value live-val" id="kv-disp">93<span>%</span></div><div class="kpi-delta up">▲ +1,4pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-icon">📦</div><div class="kpi-label">Sell Out (monto total)</div><div class="kpi-value live-val" id="kv-sellout"><span>₲</span> 4.173M</div><div class="kpi-delta up">▲ +6,2%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-purple)"><div class="kpi-icon">🔄</div><div class="kpi-label">Rotación promedio</div><div class="kpi-value live-val" id="kv-rot">7,4<span> días</span></div><div class="kpi-delta up">▲ Mejor que meta</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-icon">📈</div><div class="kpi-label">Share categoría</div><div class="kpi-value live-val" id="kv-share">38<span>%</span></div><div class="kpi-delta up">▲ +0,8pp YoY</div></div>
+      <div class="kpi-grid" id="kpi-exec">
+        <div class="kpi" style="--kc:var(--gold)">
+          <div class="kpi-eye">Locales monitoreados</div>
+          <div class="kpi-val live-val" id="kv-loc">428</div>
+          <div class="kpi-delta up">▲ +14 vs mes anterior</div>
+        </div>
+        <div class="kpi" style="--kc:var(--silver)">
+          <div class="kpi-eye">Cadenas activas</div>
+          <div class="kpi-val live-val" id="kv-cad">6</div>
+          <div class="kpi-delta flat">— Sin cambio</div>
+        </div>
+        <div class="kpi" style="--kc:var(--gold2)">
+          <div class="kpi-eye">PVP prom. Unilever</div>
+          <div class="kpi-val live-val" id="kv-pvp"><small>₲</small> 32.500</div>
+          <div class="kpi-delta up">▲ +2,1% vs competencia</div>
+        </div>
+        <div class="kpi" style="--kc:var(--silver2)">
+          <div class="kpi-eye">PVP prom. Competencia</div>
+          <div class="kpi-val live-val" id="kv-pcomp"><small>₲</small> 30.900</div>
+          <div class="kpi-delta flat">— Referencia mercado</div>
+        </div>
+        <div class="kpi" style="--kc:var(--green)">
+          <div class="kpi-eye">Sell Out — Monto total</div>
+          <div class="kpi-val live-val" id="kv-so"><small>₲</small> 4.173M</div>
+          <div class="kpi-delta up">▲ +6,2% vs mes anterior</div>
+        </div>
+        <div class="kpi" style="--kc:var(--gold)">
+          <div class="kpi-eye">Share categoría</div>
+          <div class="kpi-val live-val" id="kv-sh">38<small>%</small></div>
+          <div class="kpi-delta up">▲ +0,8pp YoY</div>
+        </div>
       </div>
 
       <div class="charts-row charts-2">
-        <!-- Precio -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left">
-              <div class="chart-title">Evolución de Precios · Ene–Abr 2026</div>
-              <div class="chart-subtitle">Unilever vs Competencia (₲ promedio)</div>
+        <!-- Price evolution -->
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div>
+              <div class="ccard-title">Evolución de Precios</div>
+              <div class="ccard-sub">PVP promedio Unilever vs Competencia (₲) · 2026</div>
             </div>
             <div style="display:flex;align-items:center;gap:10px">
-              <div class="chart-legend">
-                <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#1f36c7"></div>Unilever</div>
-                <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--accent-rose)"></div>Comp.</div>
+              <div class="ccard-legend">
+                <div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div>
+                <div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div>
               </div>
-              <button class="info-btn" onclick="showInfo(this,'Evolución de Precios','Muestra la variación mensual del precio promedio de Unilever versus la competencia en guaraníes. Permite detectar si Unilever mantiene un diferencial de precio sostenible o pierde posición de valor.')">?</button>
+              <button class="info-btn" onclick="showInfo(this)">i</button>
             </div>
           </div>
-          <div class="chart-wrap" style="height:200px"><canvas id="chartPrices"></canvas></div>
-          <div class="info-overlay" id="info-chartPrices"><button class="info-overlay-close" onclick="closeInfo('chartPrices')">✕</button><div class="info-overlay-title">📊 Evolución de Precios</div><div class="info-overlay-text">Muestra la variación mensual del <strong>precio promedio de Unilever versus la competencia</strong> en guaraníes. Permite detectar si Unilever mantiene un diferencial de precio sostenible o pierde posición de valor.</div><div class="info-overlay-filter" id="info-filter-chartPrices">Filtro activo: Todas las cadenas · Todos los períodos</div></div>
+          <div class="chart-wrap" style="height:190px"><canvas id="cPrices"></canvas></div>
+          <div class="info-popup" id="ip-cPrices">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Evolución de Precios</div>
+            <div class="ip-body">Muestra la variación mensual del <strong>precio de venta al público (PVP) promedio de Unilever versus la competencia</strong> en guaraníes. Un diferencial positivo sostenido indica que el portafolio Unilever mantiene posición premium con aceptación de mercado.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cPrices">Sin filtros</span></div>
+          </div>
         </div>
         <!-- Pie -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left">
-              <div class="chart-title">Share en Unidades Vendidas</div>
-              <div class="chart-subtitle">Distribución por subcategoría</div>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div>
+              <div class="ccard-title">Share en Unidades Vendidas</div>
+              <div class="ccard-sub">Distribución por subcategoría</div>
             </div>
-            <button class="info-btn" onclick="showInfo(this,'Share en Unidades Vendidas','Muestra la participación porcentual de cada subcategoría dentro del total de unidades vendidas de Unilever. Identifica cuáles subcategorías generan mayor volumen de negocio.')">?</button>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
           </div>
-          <div class="chart-wrap" style="height:200px"><canvas id="chartPie"></canvas></div>
-          <div class="info-overlay" id="info-chartPie"><button class="info-overlay-close" onclick="closeInfo('chartPie')">✕</button><div class="info-overlay-title">🥧 Share en Unidades Vendidas</div><div class="info-overlay-text">Muestra la <strong>participación porcentual de cada subcategoría</strong> dentro del total de unidades vendidas de Unilever. Identifica cuáles subcategorías generan mayor volumen de negocio.</div><div class="info-overlay-filter" id="info-filter-chartPie">Filtro activo: Todas las cadenas · Todos los períodos</div></div>
+          <div class="chart-wrap" style="height:190px"><canvas id="cPie"></canvas></div>
+          <div class="info-popup" id="ip-cPie">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Share en Unidades Vendidas</div>
+            <div class="ip-body">Muestra la <strong>participación porcentual de cada subcategoría</strong> dentro del total de unidades vendidas de Unilever. Permite identificar cuáles líneas de producto generan mayor volumen y priorizar inversión comercial.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cPie">Sin filtros</span></div>
+          </div>
         </div>
       </div>
 
       <div class="charts-row charts-2">
-        <!-- Disp -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">Disponibilidad por Cadena</div><div class="chart-subtitle">% OSA promedio</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Disponibilidad por Cadena','Mide el porcentaje de veces que un producto Unilever está disponible en góndola cuando el cliente lo busca. Un valor por debajo del 90% genera pérdida de venta y deterioro del share.')">?</button>
+        <!-- Sell Out bars -->
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div>
+              <div class="ccard-title">Sell Out Mensual — Monto Total</div>
+              <div class="ccard-sub">Unidades × PVP · ₲ millones · 2026</div>
+            </div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
           </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="chartDisp"></canvas></div>
-          <div class="info-overlay" id="info-chartDisp"><button class="info-overlay-close" onclick="closeInfo('chartDisp')">✕</button><div class="info-overlay-title">📦 Disponibilidad por Cadena</div><div class="info-overlay-text">Mide el <strong>porcentaje de veces que un producto Unilever está disponible en góndola</strong> cuando el cliente lo busca. Un valor por debajo del 90% genera pérdida de venta y deterioro del share.</div><div class="info-overlay-filter" id="info-filter-chartDisp">Filtro activo: Todas las cadenas</div></div>
+          <div class="chart-wrap" style="height:200px"><canvas id="cSellout"></canvas></div>
+          <div class="info-popup" id="ip-cSellout">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Sell Out — Monto Total</div>
+            <div class="ip-body">Calcula el ingreso total generado en retail: <strong>Unidades Vendidas × Precio de Venta al Público (PVP)</strong>. Este es el indicador clave de la facturación real de Unilever en el canal moderno cada mes.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cSellout">Sin filtros</span></div>
+          </div>
         </div>
-        <!-- Sell Out -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">Sell Out Mensual — Monto Total</div><div class="chart-subtitle">Unidades × Precio de Venta al Público (₲)</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Sell Out — Monto Total','Calcula el valor total generado en retail: Unidades Vendidas × Precio de Venta al Público (PVP). Este indicador refleja el ingreso real que Unilever genera en el punto de venta cada mes.')">?</button>
+        <!-- Disp por cadena -->
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div>
+              <div class="ccard-title">Sell Out por Cadena</div>
+              <div class="ccard-sub">Monto total ₲ · Abr 2026</div>
+            </div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
           </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="chartSellout"></canvas></div>
-          <div class="info-overlay" id="info-chartSellout"><button class="info-overlay-close" onclick="closeInfo('chartSellout')">✕</button><div class="info-overlay-title">💰 Sell Out — Monto Total</div><div class="info-overlay-text">Calcula el valor total generado en retail: <strong>Unidades Vendidas × Precio de Venta al Público (PVP)</strong>. Este indicador refleja el ingreso real que Unilever genera en el punto de venta cada mes.</div><div class="info-overlay-filter" id="info-filter-chartSellout">Filtro activo: Todos los períodos</div></div>
+          <div class="chart-wrap" style="height:200px"><canvas id="cDispChain"></canvas></div>
+          <div class="info-popup" id="ip-cDispChain">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Sell Out por Cadena</div>
+            <div class="ip-body">Compara el <strong>monto total de ventas (Unidades × PVP) por cadena</strong>. Permite identificar cuáles retailers generan mayor facturación para Unilever y priorizar la atención comercial y de reposición.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cDispChain">Sin filtros</span></div>
+          </div>
         </div>
       </div>
 
       <div class="charts-row charts-2">
         <!-- Top Sucursales -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">Top Sucursales Más Vendidas</div><div class="chart-subtitle" id="top-subtitle">Monto total sell out en ₲</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Top Sucursales Más Vendidas','Rankea las sucursales según el monto total de ventas (Unidades × PVP). Permite identificar qué puntos de venta generan mayor facturación y priorizar la atención comercial y de reposición.')">?</button>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div>
+              <div class="ccard-title">Top Sucursales Más Vendidas</div>
+              <div class="ccard-sub" id="top-sub">Sell out total en ₲ · Todas las cadenas</div>
+            </div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
           </div>
-          <div class="rank-list" id="rankList"></div>
-          <div class="info-overlay" id="info-topSucursales"><button class="info-overlay-close" onclick="closeInfo('topSucursales')">✕</button><div class="info-overlay-title">🏆 Top Sucursales Más Vendidas</div><div class="info-overlay-text">Rankea las sucursales según el <strong>monto total de ventas (Unidades × PVP)</strong>. Permite identificar qué puntos de venta generan mayor facturación y priorizar la atención comercial y de reposición.</div><div class="info-overlay-filter" id="info-filter-topSucursales">Filtro activo: Todas las cadenas</div></div>
+          <div class="rank-wrap" id="rankList"></div>
+          <div class="info-popup" id="ip-rankList">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Top Sucursales Más Vendidas</div>
+            <div class="ip-body">Rankea las sucursales según el <strong>monto total de ventas (Unidades × PVP)</strong>. Identifica los puntos de venta de mayor impacto para priorizar visitas, inversión en góndola y reposición.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-rankList">Sin filtros</span></div>
+          </div>
         </div>
         <!-- Alertas -->
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">⚡ Alertas Comerciales</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Alertas Comerciales','Panel de alertas automáticas que detecta: quiebres de stock, precios fuera de rango vs competencia, productos con baja rotación y oportunidades de crecimiento. Se actualiza según los filtros activos.')">?</button>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div><div class="ccard-title">Alertas Comerciales</div><div class="ccard-sub" id="alerts-sub">Actualizadas según filtros</div></div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
           </div>
-          <div class="alerts-grid" id="alertsGrid">
-            <div class="alert-item critical"><div class="alert-icon">🔴</div><div><div class="alert-title">Quiebre de stock</div><div class="alert-desc">Shampoo Sedal 400ml — Stock Aviadores. Stock cero hace 48h.</div></div></div>
-            <div class="alert-item critical"><div class="alert-icon">🔴</div><div><div class="alert-title">Precio fuera de mercado</div><div class="alert-desc">Dove Crema Corporal 250g — SuperMás Luque. ₲ 49.900 vs ref. ₲ 41.000.</div></div></div>
-            <div class="alert-item warning"><div class="alert-icon">🟡</div><div><div class="alert-title">Baja rotación</div><div class="alert-desc">Cremas Corporales — CasaRica Fdo. de la Mora. Rotación: 14,2 días.</div></div></div>
-            <div class="alert-item success"><div class="alert-icon">🟢</div><div><div class="alert-title">Oportunidad pricing</div><div class="alert-desc">Cremas Corporales pueden subir +5% sin impacto en sell out (elasticidad -0.3).</div></div></div>
-            <div class="alert-item info"><div class="alert-icon">🔵</div><div><div class="alert-title">Oportunidad expansión</div><div class="alert-desc">Shampoo pierde share en Gran Asunción. Activación recomendada.</div></div></div>
+          <div class="alerts-wrap" id="alertsWrap">
+            <div class="alert-row crit"><span class="ai">▲</span><div><div class="at">Quiebre de stock</div><div class="ad">Shampoo Sedal 400ml — Stock Aviadores. Stock cero hace 48h.</div></div></div>
+            <div class="alert-row crit"><span class="ai">▲</span><div><div class="at">Precio fuera de mercado</div><div class="ad">Dove Crema Corporal 250g — SuperMás Luque. ₲ 49.900 vs ref. ₲ 41.000.</div></div></div>
+            <div class="alert-row warn"><span class="ai">◆</span><div><div class="at">Baja rotación</div><div class="ad">Cremas Corporales — CasaRica Fdo. de la Mora. Rotación: 14,2 días.</div></div></div>
+            <div class="alert-row ok"><span class="ai">●</span><div><div class="at">Oportunidad pricing +5%</div><div class="ad">Cremas Corporales: elasticidad -0.3. Sin pérdida de volumen estimada.</div></div></div>
+            <div class="alert-row inf"><span class="ai">◉</span><div><div class="at">Expansión recomendada</div><div class="ad">Shampoo pierde share en Gran Asunción. Activación de exhibición secundaria.</div></div></div>
           </div>
-          <div class="info-overlay" id="info-alertas"><button class="info-overlay-close" onclick="closeInfo('alertas')">✕</button><div class="info-overlay-title">⚡ Alertas Comerciales</div><div class="info-overlay-text">Panel de alertas automáticas que detecta: <strong>quiebres de stock, precios fuera de rango, baja rotación y oportunidades de crecimiento</strong>. Se actualiza según los filtros activos.</div><div class="info-overlay-filter" id="info-filter-alertas">Filtro activo: Todas las cadenas</div></div>
+          <div class="info-popup" id="ip-alertsWrap">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Alertas Comerciales</div>
+            <div class="ip-body">Panel de alertas automáticas que detecta en tiempo real: <strong>quiebres de stock, precios fuera de rango de mercado, productos con baja rotación y oportunidades de crecimiento</strong>. Las alertas se filtran dinámicamente según cadena, ciudad y canal activos.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-alertsWrap">Sin filtros</span></div>
+          </div>
         </div>
       </div>
-    </div><!-- /resumen -->
+    </div><!-- /exec -->
 
-    <!-- ══════════════ CUIDADO PERSONAL ══════════════ -->
+    <!-- ═══ CUIDADO PERSONAL ═══ -->
     <div class="section" id="sec-cuidado">
-      <div class="page-header">
-        <div><div class="page-title">✨ Cuidado Personal</div><div class="page-subtitle" id="cuidado-subtitle">Desglose completo por subcategoría y competidor · Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
-      </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-label">Ventas estimadas</div><div class="kpi-value" id="c-ventas" style="font-size:16px"><span>₲</span> 18.450M</div><div class="kpi-delta up">▲ +6,2%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">Unidades vendidas</div><div class="kpi-value" id="c-unidades">412<span>K</span></div><div class="kpi-delta up">▲ +4,8%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">Sell Out (monto)</div><div class="kpi-value" id="c-sellout" style="font-size:16px"><span>₲</span> 13.390M</div><div class="kpi-delta up">▲ +6,2%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">Disponibilidad</div><div class="kpi-value" id="c-disp">93<span>%</span></div><div class="kpi-delta up">▲ +1,4pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-label">Share Unilever</div><div class="kpi-value" id="c-share">38<span>%</span></div><div class="kpi-delta up">▲ Líder</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Crecimiento mensual</div><div class="kpi-value">+6,2<span>%</span></div><div class="kpi-delta up">▲ vs mes ant.</div></div>
-      </div>
-
-      <!-- Tabla subcategoría + competidor -->
-      <div class="chart-card" style="margin-bottom:16px;position:relative">
-        <div class="chart-header">
-          <div class="chart-header-left"><div class="chart-title">Desglose por Subcategoría vs Competidor Directo</div><div class="chart-subtitle">Sell Out = Unidades × PVP</div></div>
-          <button class="info-btn" onclick="showInfo(this,'Desglose vs Competidor','Compara cada subcategoría de Unilever contra su competidor directo en precio, sell out y disponibilidad. Permite identificar dónde Unilever lidera y dónde está en riesgo.')">?</button>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Categoría</div>
+          <div class="page-title">Cuidado Personal</div>
+          <div class="page-sub" id="sub-cuidado">Análisis por subcategoría y competidor directo · Abr 2026</div>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Subcategoría</th><th>Marca</th><th>PVP Unilever (₲)</th><th>Sell Out (₲)</th><th>Disp.</th><th>Rotación</th>
-              <th style="border-left:2px solid var(--border-accent);color:var(--accent-rose)">Competidor</th>
-              <th>PVP Comp. (₲)</th><th>Sell Out Comp. (₲)</th><th>Disp. Comp.</th><th>Status</th>
-            </tr>
-          </thead>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
+      </div>
+      <div class="kpi-grid" id="kpi-cuidado">
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Sell Out — Monto Total</div><div class="kpi-val" id="cp-so"><small>₲</small> 13.390M</div><div class="kpi-delta up">▲ +6,2%</div></div>
+        <div class="kpi" style="--kc:var(--silver)"><div class="kpi-eye">Unidades vendidas</div><div class="kpi-val" id="cp-u">412<small>K</small></div><div class="kpi-delta up">▲ +4,8%</div></div>
+        <div class="kpi" style="--kc:var(--gold2)"><div class="kpi-eye">PVP promedio</div><div class="kpi-val" id="cp-pvp"><small>₲</small> 32.500</div><div class="kpi-delta flat">— Estable</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-eye">Share Unilever</div><div class="kpi-val" id="cp-sh">38<small>%</small></div><div class="kpi-delta up">▲ Líder</div></div>
+        <div class="kpi" style="--kc:var(--amber)"><div class="kpi-eye">Crecimiento mensual</div><div class="kpi-val">+6,2<small>%</small></div><div class="kpi-delta up">▲ vs mes anterior</div></div>
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Locales activos</div><div class="kpi-val" id="cp-loc">428</div><div class="kpi-delta up">▲ 100%</div></div>
+      </div>
+      <div class="ccard" style="margin-bottom:14px;position:relative">
+        <div class="ccard-hdr">
+          <div><div class="ccard-title">Desglose por Subcategoría vs Competidor Directo</div><div class="ccard-sub">Sell Out = Unidades × PVP · Abr 2026</div></div>
+          <button class="info-btn" onclick="showInfo(this)">i</button>
+        </div>
+        <table class="dtable">
+          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th class="sep-col" style="color:var(--silver2)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Posición</th></tr></thead>
           <tbody>
-            <tr>
-              <td>🦷 Crema Dental</td><td class="comp-unilever">Close Up</td><td>₲ 24.500</td><td>₲ 1.421M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">96%<div class="progress-bar" style="width:60px"><div class="progress-fill green" style="width:96%"></div></div></div></td>
-              <td>5,2 días</td>
-              <td style="border-left:2px solid var(--border-accent)" class="comp-rival">Colgate</td><td>₲ 22.900</td><td>₲ 1.189M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">93%<div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:93%"></div></div></div></td>
-              <td><span class="badge badge-green">✓ Lideramos</span></td>
-            </tr>
-            <tr>
-              <td>🧴 Cremas Corporales</td><td class="comp-unilever">Dove</td><td>₲ 41.000</td><td>₲ 1.722M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">91%<div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:91%"></div></div></div></td>
-              <td>8,1 días</td>
-              <td style="border-left:2px solid var(--border-accent)" class="comp-rival">Nivea</td><td>₲ 39.500</td><td>₲ 1.897M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">89%<div class="progress-bar" style="width:60px"><div class="progress-fill gold" style="width:89%"></div></div></div></td>
-              <td><span class="badge badge-gold">↑ Oportunidad</span></td>
-            </tr>
-            <tr>
-              <td>🧼 Jabones</td><td class="comp-unilever">Dove / Lux</td><td>₲ 12.900</td><td>₲ 993M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">95%<div class="progress-bar" style="width:60px"><div class="progress-fill green" style="width:95%"></div></div></div></td>
-              <td>4,4 días</td>
-              <td style="border-left:2px solid var(--border-accent)" class="comp-rival">Palmolive</td><td>₲ 11.500</td><td>₲ 782M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">92%<div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:92%"></div></div></div></td>
-              <td><span class="badge badge-green">✓ Líder</span></td>
-            </tr>
-            <tr>
-              <td>💇 Shampoo</td><td class="comp-unilever">Sedal</td><td>₲ 36.500</td><td>₲ 2.336M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">92%<div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:92%"></div></div></div></td>
-              <td>6,2 días</td>
-              <td style="border-left:2px solid var(--border-accent)" class="comp-rival">Head & Shoulders</td><td>₲ 38.200</td><td>₲ 2.578M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">94%<div class="progress-bar" style="width:60px"><div class="progress-fill rose" style="width:94%"></div></div></div></td>
-              <td><span class="badge badge-red">⚠ Atención</span></td>
-            </tr>
-            <tr>
-              <td>🌸 Desodorantes</td><td class="comp-unilever">Rexona / Axe</td><td>₲ 29.900</td><td>₲ 2.122M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">94%<div class="progress-bar" style="width:60px"><div class="progress-fill green" style="width:94%"></div></div></div></td>
-              <td>5,1 días</td>
-              <td style="border-left:2px solid var(--border-accent)" class="comp-rival">Gillette / Old Spice</td><td>₲ 28.500</td><td>₲ 1.710M</td>
-              <td><div style="display:flex;align-items:center;gap:6px">91%<div class="progress-bar" style="width:60px"><div class="progress-fill" style="width:91%"></div></div></div></td>
-              <td><span class="badge badge-blue">★ Destacado</span></td>
-            </tr>
+            <tr><td>🦷 Crema Dental</td><td class="tu">Close Up</td><td>₲ 24.500</td><td>₲ 1.421M</td><td class="sep-col tc">Colgate</td><td>₲ 22.900</td><td>₲ 1.189M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🧴 Cremas Corporales</td><td class="tu">Dove / Pond's</td><td>₲ 41.000</td><td>₲ 1.722M</td><td class="sep-col tc">Nivea</td><td>₲ 39.500</td><td>₲ 1.897M</td><td><span class="badge ba">↑ Oportunidad</span></td></tr>
+            <tr><td>🧼 Jabones</td><td class="tu">Dove / Lux</td><td>₲ 12.900</td><td>₲ 993M</td><td class="sep-col tc">Palmolive</td><td>₲ 11.500</td><td>₲ 782M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>💇 Shampoo</td><td class="tu">Sedal / TRESemmé</td><td>₲ 36.500</td><td>₲ 2.336M</td><td class="sep-col tc">Head &amp; Shoulders</td><td>₲ 38.200</td><td>₲ 2.578M</td><td><span class="badge br">⚠ Recuperar</span></td></tr>
+            <tr><td>🌸 Desodorantes</td><td class="tu">Rexona / Axe</td><td>₲ 29.900</td><td>₲ 2.122M</td><td class="sep-col tc">Gillette / Old Spice</td><td>₲ 28.500</td><td>₲ 1.710M</td><td><span class="badge bb">★ Destacado</span></td></tr>
           </tbody>
         </table>
-        <div class="info-overlay" id="info-tablaCuidado"><button class="info-overlay-close" onclick="closeInfo('tablaCuidado')">✕</button><div class="info-overlay-title">📊 Desglose vs Competidor</div><div class="info-overlay-text">Compara cada subcategoría de Unilever contra su <strong>competidor directo</strong> en precio, sell out y disponibilidad. Permite identificar dónde Unilever lidera y dónde está en riesgo.</div><div class="info-overlay-filter" id="info-filter-tablaCuidado">Filtro activo: Todas las cadenas</div></div>
-      </div>
-
-      <div class="charts-row charts-2">
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">Sell Out por Subcategoría (₲)</div><div class="chart-subtitle">Unilever vs Competidor · Abr 2026</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Sell Out por Subcategoría','Compara el monto total de sell out (Unidades × PVP) entre Unilever y sus competidores directos para cada subcategoría de Cuidado Personal.')">?</button>
-          </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="chartSubcatSellout"></canvas></div>
-          <div class="info-overlay" id="info-chartSubcatSellout"><button class="info-overlay-close" onclick="closeInfo('chartSubcatSellout')">✕</button><div class="info-overlay-title">💰 Sell Out por Subcategoría</div><div class="info-overlay-text">Compara el <strong>monto total de sell out (Unidades × PVP)</strong> entre Unilever y sus competidores directos por subcategoría.</div><div class="info-overlay-filter" id="info-filter-chartSubcatSellout">Filtro activo: Todas las cadenas</div></div>
+        <div class="info-popup" id="ip-tablaCuidado">
+          <button class="ip-close" onclick="closeInfo(this)">×</button>
+          <div class="ip-eye">¿Qué mide este análisis?</div>
+          <div class="ip-title">Desglose vs Competidor Directo</div>
+          <div class="ip-body">Compara cada subcategoría de Unilever contra su <strong>competidor directo</strong> en precio de venta al público y sell out total (₲). Permite identificar dónde Unilever lidera, dónde pierde terreno y dónde hay oportunidades de acción comercial.</div>
+          <div class="ip-filter">Filtro activo: <span id="iff-tablaCuidado">Sin filtros</span></div>
         </div>
-        <div class="chart-card" style="position:relative">
-          <div class="chart-header">
-            <div class="chart-header-left"><div class="chart-title">Evolución Disponibilidad</div><div class="chart-subtitle">% por subcategoría · 2026</div></div>
-            <button class="info-btn" onclick="showInfo(this,'Evolución Disponibilidad','Muestra la tendencia mensual de disponibilidad en góndola por subcategoría. Permite identificar si hay deterioro sistemático en alguna línea de productos.')">?</button>
+      </div>
+      <div class="charts-row charts-2">
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div><div class="ccard-title">Sell Out por Subcategoría (₲)</div><div class="ccard-sub">Unilever vs Competidor · Abr 2026</div></div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="ccard-legend">
+                <div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div>
+                <div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div>
+              </div>
+              <button class="info-btn" onclick="showInfo(this)">i</button>
+            </div>
           </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="chartDispEvol"></canvas></div>
-          <div class="info-overlay" id="info-chartDispEvol"><button class="info-overlay-close" onclick="closeInfo('chartDispEvol')">✕</button><div class="info-overlay-title">📦 Evolución Disponibilidad</div><div class="info-overlay-text">Muestra la <strong>tendencia mensual de disponibilidad</strong> por subcategoría. Identifica si hay deterioro sistemático en alguna línea de productos.</div><div class="info-overlay-filter" id="info-filter-chartDispEvol">Filtro activo: Todas las cadenas</div></div>
+          <div class="chart-wrap" style="height:200px"><canvas id="cCuidadoBars"></canvas></div>
+          <div class="info-popup" id="ip-cCuidadoBars">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Sell Out por Subcategoría</div>
+            <div class="ip-body">Compara el monto total de sell out <strong>(Unidades × PVP en ₲)</strong> de Unilever versus su competidor directo en cada subcategoría. Las barras más altas indican mayor facturación.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cCuidadoBars">Sin filtros</span></div>
+          </div>
+        </div>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div><div class="ccard-title">Sell Out Mensual</div><div class="ccard-sub">Evolución ₲ · Cuidado Personal · 2026</div></div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
+          </div>
+          <div class="chart-wrap" style="height:200px"><canvas id="cCuidadoLine"></canvas></div>
+          <div class="info-popup" id="ip-cCuidadoLine">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Evolución Sell Out Mensual</div>
+            <div class="ip-body">Muestra la <strong>tendencia mensual del monto total de ventas</strong> de Cuidado Personal en el año 2026. Permite detectar estacionalidad, impulsos promocionales y tendencias de crecimiento o declinación.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cCuidadoLine">Sin filtros</span></div>
+          </div>
         </div>
       </div>
     </div><!-- /cuidado -->
 
-    <!-- ══════════════ CONDIMENTOS ══════════════ -->
+    <!-- ═══ CONDIMENTOS ═══ -->
     <div class="section" id="sec-condimentos">
-      <div class="page-header">
-        <div><div class="page-title">🌶️ Condimentos</div><div class="page-subtitle">Análisis con competidores directos · Ene–Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Categoría</div>
+          <div class="page-title">Condimentos</div>
+          <div class="page-sub" id="sub-condimentos">Análisis por subcategoría y competidor directo · Abr 2026</div>
+        </div>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
       </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">Sell Out (monto)</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 5.373M</div><div class="kpi-delta up">▲ +4,1%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">Unidades vendidas</div><div class="kpi-value">186<span>K</span></div><div class="kpi-delta up">▲ +3,8%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-label">PVP promedio</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 28.900</div><div class="kpi-delta neutral">→ Estable</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-purple)"><div class="kpi-label">Disponibilidad</div><div class="kpi-value">91<span>%</span></div><div class="kpi-delta up">▲ +0,9pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-label">Share Unilever</div><div class="kpi-value">44<span>%</span></div><div class="kpi-delta up">▲ Líder</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Rotación prom.</div><div class="kpi-value">9,2<span> días</span></div><div class="kpi-delta neutral">→ Normal</div></div>
+      <div class="kpi-grid">
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Sell Out — Monto Total</div><div class="kpi-val"><small>₲</small> 5.373M</div><div class="kpi-delta up">▲ +4,1%</div></div>
+        <div class="kpi" style="--kc:var(--silver)"><div class="kpi-eye">Unidades vendidas</div><div class="kpi-val">186<small>K</small></div><div class="kpi-delta up">▲ +3,8%</div></div>
+        <div class="kpi" style="--kc:var(--gold2)"><div class="kpi-eye">PVP promedio</div><div class="kpi-val"><small>₲</small> 28.900</div><div class="kpi-delta flat">— Estable</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-eye">Share Unilever</div><div class="kpi-val">44<small>%</small></div><div class="kpi-delta up">▲ Líder</div></div>
+        <div class="kpi" style="--kc:var(--amber)"><div class="kpi-eye">Crecimiento mensual</div><div class="kpi-val">+4,1<small>%</small></div><div class="kpi-delta up">▲ vs mes anterior</div></div>
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Locales activos</div><div class="kpi-val">386</div><div class="kpi-delta up">▲ 90%</div></div>
       </div>
-      <div class="chart-card" style="margin-bottom:16px">
-        <div class="chart-header"><div class="chart-header-left"><div class="chart-title">Desglose por Subcategoría vs Competidor Directo</div><div class="chart-subtitle">Sell Out = Unidades × PVP</div></div></div>
-        <table class="data-table">
-          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th>Disp.</th><th style="border-left:2px solid var(--border-accent);color:var(--accent-rose)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Status</th></tr></thead>
+      <div class="ccard" style="margin-bottom:14px;position:relative">
+        <div class="ccard-hdr"><div><div class="ccard-title">Desglose por Subcategoría vs Competidor Directo</div><div class="ccard-sub">Sell Out = Unidades × PVP · Abr 2026</div></div><button class="info-btn" onclick="showInfo(this)">i</button></div>
+        <table class="dtable">
+          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th class="sep-col" style="color:var(--silver2)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Posición</th></tr></thead>
           <tbody>
-            <tr><td>🍋 Mayonesa</td><td class="comp-unilever">Hellmann's</td><td>₲ 32.500</td><td>₲ 2.080M</td><td>93%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Heinz</td><td>₲ 31.200</td><td>₲ 1.622M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🍅 Ketchup</td><td class="comp-unilever">Hellmann's</td><td>₲ 24.900</td><td>₲ 1.195M</td><td>90%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Heinz</td><td>₲ 26.500</td><td>₲ 1.378M</td><td><span class="badge badge-red">⚠ Atención</span></td></tr>
-            <tr><td>🫙 Salsas especiales</td><td class="comp-unilever">Hellmann's</td><td>₲ 29.200</td><td>₲ 1.110M</td><td>88%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Knorr / Maggi</td><td>₲ 27.800</td><td>₲ 856M</td><td><span class="badge badge-gold">↑ Oportunidad</span></td></tr>
-            <tr><td>🧂 Mostaza</td><td class="comp-unilever">Hellmann's</td><td>₲ 19.800</td><td>₲ 713M</td><td>92%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Heinz</td><td>₲ 18.900</td><td>₲ 642M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
+            <tr><td>🍋 Mayonesa</td><td class="tu">Hellmann's</td><td>₲ 32.500</td><td>₲ 2.080M</td><td class="sep-col tc">Heinz</td><td>₲ 31.200</td><td>₲ 1.622M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🍅 Ketchup</td><td class="tu">Hellmann's</td><td>₲ 24.900</td><td>₲ 1.195M</td><td class="sep-col tc">Heinz</td><td>₲ 26.500</td><td>₲ 1.378M</td><td><span class="badge br">⚠ Recuperar</span></td></tr>
+            <tr><td>🫙 Salsas especiales</td><td class="tu">Hellmann's</td><td>₲ 29.200</td><td>₲ 1.110M</td><td class="sep-col tc">Knorr / Maggi</td><td>₲ 27.800</td><td>₲ 856M</td><td><span class="badge ba">↑ Oportunidad</span></td></tr>
+            <tr><td>🧂 Mostaza</td><td class="tu">Hellmann's</td><td>₲ 19.800</td><td>₲ 713M</td><td class="sep-col tc">Heinz</td><td>₲ 18.900</td><td>₲ 642M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
           </tbody>
         </table>
+        <div class="info-popup" id="ip-tablaCondimentos">
+          <button class="ip-close" onclick="closeInfo(this)">×</button>
+          <div class="ip-eye">¿Qué mide este análisis?</div>
+          <div class="ip-title">Desglose vs Competidor Directo</div>
+          <div class="ip-body">Compara cada subcategoría de Unilever contra su <strong>competidor directo</strong> en precio de venta al público y sell out total. Permite detectar dónde Hellmann's lidera y dónde Heinz o Maggi ganan terreno.</div>
+          <div class="ip-filter">Filtro activo: <span id="iff-tablaCondimentos">Sin filtros</span></div>
+        </div>
       </div>
       <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Evolución Sell Out — Condimentos (₲)</div><div class="chart-subtitle">Monto mensual 2026</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartCondVentas"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Share por Subcategoría</div><div class="chart-subtitle">Distribución en unidades</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartCondPie"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out por Subcategoría (₲)</div><div class="ccard-sub">Unilever vs Competidor · Abr 2026</div></div><div class="ccard-legend"><div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div><div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cCondBars"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out Mensual</div><div class="ccard-sub">Evolución ₲ · Condimentos · 2026</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cCondLine"></canvas></div></div>
       </div>
     </div><!-- /condimentos -->
 
-    <!-- ══════════════ LIMPIEZA ══════════════ -->
+    <!-- ═══ LIMPIEZA ═══ -->
     <div class="section" id="sec-limpieza">
-      <div class="page-header">
-        <div><div class="page-title">🧹 Limpieza</div><div class="page-subtitle">Análisis con competidores directos · Ene–Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Categoría</div>
+          <div class="page-title">Limpieza</div>
+          <div class="page-sub" id="sub-limpieza">Análisis por subcategoría y competidor directo · Abr 2026</div>
+        </div>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
       </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">Sell Out (monto)</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 11.388M</div><div class="kpi-delta up">▲ +7,8%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-label">Unidades vendidas</div><div class="kpi-value">298<span>K</span></div><div class="kpi-delta up">▲ +6,3%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">PVP promedio</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 38.200</div><div class="kpi-delta up">▲ +1,2%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-label">Share Unilever</div><div class="kpi-value">41<span>%</span></div><div class="kpi-delta up">▲ +1,1pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-purple)"><div class="kpi-label">Disponibilidad</div><div class="kpi-value">89<span>%</span></div><div class="kpi-delta down">▼ -0,5pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Rotación prom.</div><div class="kpi-value">11,4<span> días</span></div><div class="kpi-delta down">▼ Lento</div></div>
+      <div class="kpi-grid">
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Sell Out — Monto Total</div><div class="kpi-val"><small>₲</small> 11.388M</div><div class="kpi-delta up">▲ +7,8%</div></div>
+        <div class="kpi" style="--kc:var(--silver)"><div class="kpi-eye">Unidades vendidas</div><div class="kpi-val">298<small>K</small></div><div class="kpi-delta up">▲ +6,3%</div></div>
+        <div class="kpi" style="--kc:var(--gold2)"><div class="kpi-eye">PVP promedio</div><div class="kpi-val"><small>₲</small> 38.200</div><div class="kpi-delta up">▲ +1,2%</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-eye">Share Unilever</div><div class="kpi-val">41<small>%</small></div><div class="kpi-delta up">▲ +1,1pp</div></div>
+        <div class="kpi" style="--kc:var(--amber)"><div class="kpi-eye">Crecimiento mensual</div><div class="kpi-val">+7,8<small>%</small></div><div class="kpi-delta up">▲ vs mes anterior</div></div>
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Locales activos</div><div class="kpi-val">410</div><div class="kpi-delta up">▲ 96%</div></div>
       </div>
-      <div class="chart-card" style="margin-bottom:16px">
-        <div class="chart-header"><div class="chart-header-left"><div class="chart-title">Desglose por Subcategoría vs Competidor Directo</div><div class="chart-subtitle">Sell Out = Unidades × PVP</div></div></div>
-        <table class="data-table">
-          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th>Disp.</th><th style="border-left:2px solid var(--border-accent);color:var(--accent-rose)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Status</th></tr></thead>
+      <div class="ccard" style="margin-bottom:14px;position:relative">
+        <div class="ccard-hdr"><div><div class="ccard-title">Desglose por Subcategoría vs Competidor Directo</div><div class="ccard-sub">Sell Out = Unidades × PVP · Abr 2026</div></div><button class="info-btn" onclick="showInfo(this)">i</button></div>
+        <table class="dtable">
+          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th class="sep-col" style="color:var(--silver2)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Posición</th></tr></thead>
           <tbody>
-            <tr><td>🫧 Detergente líquido</td><td class="comp-unilever">Ala / Comfort</td><td>₲ 42.900</td><td>₲ 3.775M</td><td>91%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Ariel / Skip</td><td>₲ 44.500</td><td>₲ 3.115M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🌸 Suavizante</td><td class="comp-unilever">Comfort</td><td>₲ 38.500</td><td>₲ 2.849M</td><td>88%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Downy</td><td>₲ 36.200</td><td>₲ 3.077M</td><td><span class="badge badge-red">⚠ Atención</span></td></tr>
-            <tr><td>🧽 Desinfectante</td><td class="comp-unilever">Cif / Domestos</td><td>₲ 29.800</td><td>₲ 2.444M</td><td>90%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Flash / Lysoform</td><td>₲ 28.400</td><td>₲ 2.017M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🪣 Lavandina</td><td class="comp-unilever">Cif</td><td>₲ 18.200</td><td>₲ 982M</td><td>85%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Ayudín</td><td>₲ 16.900</td><td>₲ 1.198M</td><td><span class="badge badge-red">⚠ Atención</span></td></tr>
+            <tr><td>🫧 Detergente líquido</td><td class="tu">Ala / Comfort</td><td>₲ 42.900</td><td>₲ 3.775M</td><td class="sep-col tc">Ariel / Skip</td><td>₲ 44.500</td><td>₲ 3.115M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🌸 Suavizante</td><td class="tu">Comfort</td><td>₲ 38.500</td><td>₲ 2.849M</td><td class="sep-col tc">Downy</td><td>₲ 36.200</td><td>₲ 3.077M</td><td><span class="badge br">⚠ Recuperar</span></td></tr>
+            <tr><td>🧽 Desinfectante</td><td class="tu">Cif / Domestos</td><td>₲ 29.800</td><td>₲ 2.444M</td><td class="sep-col tc">Flash / Lysoform</td><td>₲ 28.400</td><td>₲ 2.017M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🪣 Lavandina</td><td class="tu">Cif</td><td>₲ 18.200</td><td>₲ 982M</td><td class="sep-col tc">Ayudín</td><td>₲ 16.900</td><td>₲ 1.198M</td><td><span class="badge br">⚠ Recuperar</span></td></tr>
           </tbody>
         </table>
+        <div class="info-popup" id="ip-tablaLimpieza">
+          <button class="ip-close" onclick="closeInfo(this)">×</button>
+          <div class="ip-eye">¿Qué mide este análisis?</div>
+          <div class="ip-title">Desglose vs Competidor Directo</div>
+          <div class="ip-body">Compara cada subcategoría de Limpieza Unilever contra su <strong>competidor directo</strong> en PVP y sell out. Permite detectar pérdida de terreno frente a Ariel, Downy o Ayudín y planificar acciones defensivas.</div>
+          <div class="ip-filter">Filtro activo: <span id="iff-tablaLimpieza">Sin filtros</span></div>
+        </div>
       </div>
       <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Evolución Sell Out — Limpieza (₲)</div><div class="chart-subtitle">Monto mensual 2026</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartLimpVentas"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Disponibilidad por Cadena</div><div class="chart-subtitle">Limpieza · Abr 2026</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartLimpDisp"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out por Subcategoría (₲)</div><div class="ccard-sub">Unilever vs Competidor · Abr 2026</div></div><div class="ccard-legend"><div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div><div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cLimpBars"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out Mensual</div><div class="ccard-sub">Evolución ₲ · Limpieza · 2026</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cLimpLine"></canvas></div></div>
       </div>
     </div><!-- /limpieza -->
 
-    <!-- ══════════════ ALIMENTOS ══════════════ -->
+    <!-- ═══ ALIMENTOS ═══ -->
     <div class="section" id="sec-alimentos">
-      <div class="page-header">
-        <div><div class="page-title">🍽️ Alimentos</div><div class="page-subtitle">Análisis con competidores directos · Ene–Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Categoría</div>
+          <div class="page-title">Alimentos</div>
+          <div class="page-sub" id="sub-alimentos">Análisis por subcategoría y competidor directo · Abr 2026</div>
+        </div>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
       </div>
-      <div class="kpi-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Sell Out (monto)</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 5.018M</div><div class="kpi-delta up">▲ +5,3%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-label">Unidades vendidas</div><div class="kpi-value">224<span>K</span></div><div class="kpi-delta up">▲ +4,7%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">PVP promedio</div><div class="kpi-value" style="font-size:16px"><span>₲</span> 22.400</div><div class="kpi-delta neutral">→ Estable</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-label">Share Unilever</div><div class="kpi-value">29<span>%</span></div><div class="kpi-delta up">▲ +0,5pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">Disponibilidad</div><div class="kpi-value">94<span>%</span></div><div class="kpi-delta up">▲ +1,2pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-purple)"><div class="kpi-label">Rotación prom.</div><div class="kpi-value">6,8<span> días</span></div><div class="kpi-delta up">▲ Eficiente</div></div>
+      <div class="kpi-grid">
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Sell Out — Monto Total</div><div class="kpi-val"><small>₲</small> 5.018M</div><div class="kpi-delta up">▲ +5,3%</div></div>
+        <div class="kpi" style="--kc:var(--silver)"><div class="kpi-eye">Unidades vendidas</div><div class="kpi-val">224<small>K</small></div><div class="kpi-delta up">▲ +4,7%</div></div>
+        <div class="kpi" style="--kc:var(--gold2)"><div class="kpi-eye">PVP promedio</div><div class="kpi-val"><small>₲</small> 22.400</div><div class="kpi-delta flat">— Estable</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-eye">Share Unilever</div><div class="kpi-val">29<small>%</small></div><div class="kpi-delta up">▲ +0,5pp</div></div>
+        <div class="kpi" style="--kc:var(--amber)"><div class="kpi-eye">Crecimiento mensual</div><div class="kpi-val">+5,3<small>%</small></div><div class="kpi-delta up">▲ vs mes anterior</div></div>
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Locales activos</div><div class="kpi-val">398</div><div class="kpi-delta up">▲ 93%</div></div>
       </div>
-      <div class="chart-card" style="margin-bottom:16px">
-        <div class="chart-header"><div class="chart-header-left"><div class="chart-title">Desglose por Subcategoría vs Competidor Directo</div><div class="chart-subtitle">Sell Out = Unidades × PVP</div></div></div>
-        <table class="data-table">
-          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th>Disp.</th><th style="border-left:2px solid var(--border-accent);color:var(--accent-rose)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Status</th></tr></thead>
+      <div class="ccard" style="margin-bottom:14px;position:relative">
+        <div class="ccard-hdr"><div><div class="ccard-title">Desglose por Subcategoría vs Competidor Directo</div><div class="ccard-sub">Sell Out = Unidades × PVP · Abr 2026</div></div><button class="info-btn" onclick="showInfo(this)">i</button></div>
+        <table class="dtable">
+          <thead><tr><th>Subcategoría</th><th>Marca Unilever</th><th>PVP (₲)</th><th>Sell Out (₲)</th><th class="sep-col" style="color:var(--silver2)">Competidor</th><th>PVP Comp.</th><th>Sell Out Comp.</th><th>Posición</th></tr></thead>
           <tbody>
-            <tr><td>🍲 Caldos</td><td class="comp-unilever">Knorr</td><td>₲ 14.900</td><td>₲ 1.222M</td><td>95%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Maggi</td><td>₲ 13.800</td><td>₲ 1.063M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🥣 Sopas instantáneas</td><td class="comp-unilever">Knorr</td><td>₲ 19.200</td><td>₲ 1.114M</td><td>93%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Maggi / Sopita</td><td>₲ 17.500</td><td>₲ 1.249M</td><td><span class="badge badge-gold">↑ Oportunidad</span></td></tr>
-            <tr><td>🧈 Margarinas</td><td class="comp-unilever">Flora / Doriana</td><td>₲ 28.500</td><td>₲ 1.368M</td><td>91%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Cocinero / Dánica</td><td>₲ 26.800</td><td>₲ 1.179M</td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🫒 Aderezos</td><td class="comp-unilever">Hellmann's</td><td>₲ 24.900</td><td>₲ 896M</td><td>89%</td><td style="border-left:2px solid var(--border-accent)" class="comp-rival">Heinz / Knorr</td><td>₲ 23.200</td><td>₲ 957M</td><td><span class="badge badge-gold">↑ Oportunidad</span></td></tr>
+            <tr><td>🍲 Caldos</td><td class="tu">Knorr</td><td>₲ 14.900</td><td>₲ 1.222M</td><td class="sep-col tc">Maggi</td><td>₲ 13.800</td><td>₲ 1.063M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🥣 Sopas instantáneas</td><td class="tu">Knorr</td><td>₲ 19.200</td><td>₲ 1.114M</td><td class="sep-col tc">Maggi / Sopita</td><td>₲ 17.500</td><td>₲ 1.249M</td><td><span class="badge ba">↑ Oportunidad</span></td></tr>
+            <tr><td>🧈 Margarinas</td><td class="tu">Flora / Doriana</td><td>₲ 28.500</td><td>₲ 1.368M</td><td class="sep-col tc">Cocinero / Dánica</td><td>₲ 26.800</td><td>₲ 1.179M</td><td><span class="badge bg">✓ Lideramos</span></td></tr>
+            <tr><td>🫒 Aderezos</td><td class="tu">Hellmann's</td><td>₲ 24.900</td><td>₲ 896M</td><td class="sep-col tc">Heinz / Knorr</td><td>₲ 23.200</td><td>₲ 957M</td><td><span class="badge ba">↑ Oportunidad</span></td></tr>
           </tbody>
         </table>
+        <div class="info-popup" id="ip-tablaAlimentos">
+          <button class="ip-close" onclick="closeInfo(this)">×</button>
+          <div class="ip-eye">¿Qué mide este análisis?</div>
+          <div class="ip-title">Desglose vs Competidor Directo</div>
+          <div class="ip-body">Compara cada subcategoría de Alimentos Unilever contra su <strong>competidor directo</strong> en PVP y sell out total. Permite identificar dónde Knorr domina y dónde Maggi o Heinz ganan posición.</div>
+          <div class="ip-filter">Filtro activo: <span id="iff-tablaAlimentos">Sin filtros</span></div>
+        </div>
       </div>
       <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Evolución Sell Out — Alimentos (₲)</div><div class="chart-subtitle">Monto mensual 2026</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartAlimVentas"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Share por Subcategoría</div><div class="chart-subtitle">Distribución en unidades</div></div><div class="chart-wrap" style="height:220px"><canvas id="chartAlimPie"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out por Subcategoría (₲)</div><div class="ccard-sub">Unilever vs Competidor · Abr 2026</div></div><div class="ccard-legend"><div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div><div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cAlimBars"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out Mensual</div><div class="ccard-sub">Evolución ₲ · Alimentos · 2026</div></div></div><div class="chart-wrap" style="height:200px"><canvas id="cAlimLine"></canvas></div></div>
       </div>
     </div><!-- /alimentos -->
 
-    <!-- ══════════════ PRICING ══════════════ -->
+    <!-- ═══ PRICING ═══ -->
     <div class="section" id="sec-pricing">
-      <div class="page-header">
-        <div><div class="page-title">💲 Análisis de Pricing</div><div class="page-subtitle">Índice de precios Unilever vs Competencia · Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Analítica</div>
+          <div class="page-title">Análisis de Pricing</div>
+          <div class="page-sub" id="sub-pricing">Índice de precios Unilever vs Competencia · Abr 2026</div>
+        </div>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi-card" style="--kpi-color:var(--unilever-blue)"><div class="kpi-label">Índice precio vs comp.</div><div class="kpi-value">105,2<span>%</span></div><div class="kpi-delta up">▲ Premium positivo</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">Productos en precio</div><div class="kpi-value">78<span>%</span></div><div class="kpi-delta neutral">→ vs target 80%</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Precio fuera de rango</div><div class="kpi-value">14<span> SKUs</span></div><div class="kpi-delta down">▼ Requiere acción</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">Elasticidad promedio</div><div class="kpi-value">-0,42</div><div class="kpi-delta up">▲ Baja sensibilidad</div></div>
+        <div class="kpi" style="--kc:var(--gold)"><div class="kpi-eye">Índice precio vs comp.</div><div class="kpi-val">105,2<small>%</small></div><div class="kpi-delta up">▲ Premium positivo</div></div>
+        <div class="kpi" style="--kc:var(--amber)"><div class="kpi-eye">Productos en precio</div><div class="kpi-val">78<small>%</small></div><div class="kpi-delta flat">— vs target 80%</div></div>
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-eye">Precio fuera de rango</div><div class="kpi-val">14<small>SKUs</small></div><div class="kpi-delta down">▼ Requiere acción</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-eye">Elasticidad promedio</div><div class="kpi-val">-0,42</div><div class="kpi-delta up">▲ Baja sensibilidad</div></div>
       </div>
       <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Precio por SKU — Unilever vs Competencia</div></div><div class="chart-wrap" style="height:280px"><canvas id="chartPriceSKU"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Precio por Cadena</div><div class="chart-subtitle">PVP promedio Unilever en cada cadena</div></div><div class="chart-wrap" style="height:280px"><canvas id="chartPriceChain"></canvas></div></div>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div><div class="ccard-title">PVP por SKU — Unilever vs Competencia</div><div class="ccard-sub">Precio en ₲</div></div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
+          </div>
+          <div class="chart-wrap" style="height:260px"><canvas id="cPriceSKU"></canvas></div>
+          <div class="info-popup" id="ip-cPriceSKU">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">PVP por SKU</div>
+            <div class="ip-body">Compara el <strong>precio de venta al público por SKU individual</strong> entre Unilever y su competidor directo. Permite detectar SKUs con precio fuera de rango y decidir acciones de ajuste de precio.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cPriceSKU">Sin filtros</span></div>
+          </div>
+        </div>
+        <div class="ccard" style="position:relative">
+          <div class="ccard-hdr">
+            <div><div class="ccard-title">Índice de Precio por Categoría</div><div class="ccard-sub">Unilever = 100. Por encima = más caro que competencia</div></div>
+            <button class="info-btn" onclick="showInfo(this)">i</button>
+          </div>
+          <div class="chart-wrap" style="height:260px"><canvas id="cPriceIdx"></canvas></div>
+          <div class="info-popup" id="ip-cPriceIdx">
+            <button class="ip-close" onclick="closeInfo(this)">×</button>
+            <div class="ip-eye">¿Qué mide este análisis?</div>
+            <div class="ip-title">Índice de Precio por Categoría</div>
+            <div class="ip-body">Muestra si Unilever es <strong>más caro o más barato que la competencia</strong> en cada categoría. Un índice de 105 significa que el PVP de Unilever es 5% más alto que el competidor. Ayuda a identificar riesgo de pérdida de share por precio.</div>
+            <div class="ip-filter">Filtro activo: <span id="iff-cPriceIdx">Sin filtros</span></div>
+          </div>
+        </div>
       </div>
     </div><!-- /pricing -->
 
-    <!-- ══════════════ DISPONIBILIDAD ══════════════ -->
-    <div class="section" id="sec-disponibilidad">
-      <div class="page-header">
-        <div><div class="page-title">📦 Disponibilidad</div><div class="page-subtitle">On-shelf availability y quiebres de stock · Abr 2026</div></div>
-        <div class="page-actions"><button class="btn-export primary" onclick="alert('Exportando...')">📊 Exportar</button></div>
-      </div>
-      <div class="kpi-grid">
-        <div class="kpi-card" style="--kpi-color:var(--accent-teal)"><div class="kpi-label">OSA Promedio</div><div class="kpi-value">93<span>%</span></div><div class="kpi-delta up">▲ +1,4pp</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-rose)"><div class="kpi-label">Quiebres activos</div><div class="kpi-value">23<span> SKUs</span></div><div class="kpi-delta down">▼ Atención</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-gold)"><div class="kpi-label">Rotación promedio</div><div class="kpi-value">7,4<span> días</span></div><div class="kpi-delta up">▲ Eficiente</div></div>
-        <div class="kpi-card" style="--kpi-color:var(--accent-blue)"><div class="kpi-label">SKUs monitoreados</div><div class="kpi-value">148</div><div class="kpi-delta neutral">→ Completo</div></div>
-      </div>
-      <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">OSA por Cadena</div></div><div class="chart-wrap" style="height:250px"><canvas id="chartOSA"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Quiebres por Subcategoría</div></div><div class="chart-wrap" style="height:250px"><canvas id="chartQuiebres"></canvas></div></div>
-      </div>
-    </div><!-- /disponibilidad -->
-
-    <!-- ══════════════ COMPETENCIA ══════════════ -->
+    <!-- ═══ COMPETENCIA ═══ -->
     <div class="section" id="sec-competencia">
-      <div class="page-header">
-        <div><div class="page-title">⚔️ Mapa de Competencia</div><div class="page-subtitle">Competidores directos de Unilever por categoría · Abr 2026</div></div>
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <div class="page-eyebrow">Analítica</div>
+          <div class="page-title">Mapa de Competencia</div>
+          <div class="page-sub">Competidores directos por categoría y share de mercado · Abr 2026</div>
+        </div>
+        <div class="page-hdr-right"><button class="btn-act primary" onclick="alert('Exportando...')">⊞ Exportar</button></div>
       </div>
-      <div class="chart-card" style="margin-bottom:20px">
-        <div class="chart-header"><div class="chart-title">Competidores Directos por Categoría</div><div class="chart-subtitle">Marcas que compiten contra Unilever en cada segmento</div></div>
-        <table class="data-table">
-          <thead><tr><th>Categoría</th><th>Marca Unilever</th><th>Competidor Principal</th><th>Competidor 2</th><th>PVP Unilever (₲)</th><th>PVP Comp. (₲)</th><th>Share Unilever</th><th>Share Comp.</th><th>Status</th></tr></thead>
+      <div class="ccard" style="margin-bottom:14px">
+        <div class="ccard-hdr"><div><div class="ccard-title">Competidores Directos por Categoría</div><div class="ccard-sub">Share de mercado y diferencial de precio</div></div></div>
+        <table class="dtable">
+          <thead><tr><th>Categoría</th><th>Marca Unilever</th><th>Competidor 1</th><th>Competidor 2</th><th>PVP Uni (₲)</th><th>PVP Comp (₲)</th><th>Share Uni</th><th>Share Comp</th><th>Status</th></tr></thead>
           <tbody>
-            <tr><td>🦷 Crema Dental</td><td class="comp-unilever">Close Up</td><td class="comp-rival">Colgate</td><td class="comp-rival">Oral-B</td><td>₲ 24.500</td><td>₲ 22.900</td><td><span class="badge badge-blue">34%</span></td><td><span class="badge badge-red">41%</span></td><td><span class="badge badge-gold">↑ Crecer</span></td></tr>
-            <tr><td>🧴 Cremas Corporales</td><td class="comp-unilever">Dove / Pond's</td><td class="comp-rival">Nivea</td><td class="comp-rival">Neutrogena</td><td>₲ 41.000</td><td>₲ 39.500</td><td><span class="badge badge-blue">38%</span></td><td><span class="badge badge-red">44%</span></td><td><span class="badge badge-gold">↑ Oportunidad</span></td></tr>
-            <tr><td>🧼 Jabones</td><td class="comp-unilever">Dove / Lux</td><td class="comp-rival">Palmolive</td><td class="comp-rival">Protex</td><td>₲ 12.900</td><td>₲ 11.500</td><td><span class="badge badge-green">48%</span></td><td><span class="badge badge-red">32%</span></td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>💇 Shampoo</td><td class="comp-unilever">Sedal / TRESemmé</td><td class="comp-rival">Head & Shoulders</td><td class="comp-rival">Pantene</td><td>₲ 36.500</td><td>₲ 38.200</td><td><span class="badge badge-red">28%</span></td><td><span class="badge badge-red">36%</span></td><td><span class="badge badge-red">⚠ Recuperar</span></td></tr>
-            <tr><td>🌸 Desodorantes</td><td class="comp-unilever">Rexona / Axe / Dove</td><td class="comp-rival">Gillette</td><td class="comp-rival">Nivea Deo</td><td>₲ 29.900</td><td>₲ 28.500</td><td><span class="badge badge-green">42%</span></td><td><span class="badge badge-red">31%</span></td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🍋 Mayonesa / Ketchup</td><td class="comp-unilever">Hellmann's</td><td class="comp-rival">Heinz</td><td class="comp-rival">Fanacoa</td><td>₲ 32.500</td><td>₲ 31.200</td><td><span class="badge badge-green">44%</span></td><td><span class="badge badge-red">38%</span></td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🫧 Detergentes</td><td class="comp-unilever">Ala / Comfort</td><td class="comp-rival">Ariel</td><td class="comp-rival">Skip / Fab</td><td>₲ 42.900</td><td>₲ 44.500</td><td><span class="badge badge-green">41%</span></td><td><span class="badge badge-red">35%</span></td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
-            <tr><td>🍲 Caldos / Sopas</td><td class="comp-unilever">Knorr</td><td class="comp-rival">Maggi (Nestlé)</td><td class="comp-rival">Sopita</td><td>₲ 14.900</td><td>₲ 13.800</td><td><span class="badge badge-green">39%</span></td><td><span class="badge badge-red">34%</span></td><td><span class="badge badge-green">✓ Lideramos</span></td></tr>
+            <tr><td>🦷 Crema Dental</td><td class="tu">Close Up</td><td class="tc">Colgate</td><td class="tc">Oral-B</td><td>₲ 24.500</td><td>₲ 22.900</td><td><span class="badge bb">34%</span></td><td><span class="badge br">41%</span></td><td><span class="badge ba">↑ Crecer</span></td></tr>
+            <tr><td>🧴 Cremas Corp.</td><td class="tu">Dove / Pond's</td><td class="tc">Nivea</td><td class="tc">Neutrogena</td><td>₲ 41.000</td><td>₲ 39.500</td><td><span class="badge bb">38%</span></td><td><span class="badge br">44%</span></td><td><span class="badge ba">↑ Crecer</span></td></tr>
+            <tr><td>🧼 Jabones</td><td class="tu">Dove / Lux</td><td class="tc">Palmolive</td><td class="tc">Protex</td><td>₲ 12.900</td><td>₲ 11.500</td><td><span class="badge bg">48%</span></td><td><span class="badge br">32%</span></td><td><span class="badge bg">✓ Líder</span></td></tr>
+            <tr><td>💇 Shampoo</td><td class="tu">Sedal / TRESemmé</td><td class="tc">Head &amp; Shoulders</td><td class="tc">Pantene</td><td>₲ 36.500</td><td>₲ 38.200</td><td><span class="badge br">28%</span></td><td><span class="badge br">36%</span></td><td><span class="badge br">⚠ Urgente</span></td></tr>
+            <tr><td>🌸 Desodorantes</td><td class="tu">Rexona / Axe</td><td class="tc">Gillette</td><td class="tc">Nivea Deo</td><td>₲ 29.900</td><td>₲ 28.500</td><td><span class="badge bg">42%</span></td><td><span class="badge br">31%</span></td><td><span class="badge bg">✓ Líder</span></td></tr>
+            <tr><td>🍋 Condimentos</td><td class="tu">Hellmann's</td><td class="tc">Heinz</td><td class="tc">Fanacoa</td><td>₲ 32.500</td><td>₲ 31.200</td><td><span class="badge bg">44%</span></td><td><span class="badge br">38%</span></td><td><span class="badge bg">✓ Líder</span></td></tr>
+            <tr><td>🫧 Detergentes</td><td class="tu">Ala / Comfort</td><td class="tc">Ariel</td><td class="tc">Skip / Fab</td><td>₲ 42.900</td><td>₲ 44.500</td><td><span class="badge bg">41%</span></td><td><span class="badge br">35%</span></td><td><span class="badge bg">✓ Líder</span></td></tr>
+            <tr><td>🍲 Caldos / Sopas</td><td class="tu">Knorr</td><td class="tc">Maggi (Nestlé)</td><td class="tc">Sopita</td><td>₲ 14.900</td><td>₲ 13.800</td><td><span class="badge bg">39%</span></td><td><span class="badge br">34%</span></td><td><span class="badge bg">✓ Líder</span></td></tr>
           </tbody>
         </table>
       </div>
       <div class="charts-row charts-2">
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Share Unilever vs Competencia por Categoría</div><div class="chart-subtitle">% participación de mercado</div></div><div class="chart-wrap" style="height:280px"><canvas id="chartShareComp"></canvas></div></div>
-        <div class="chart-card"><div class="chart-header"><div class="chart-title">Índice de Precio vs Competidor</div><div class="chart-subtitle">Unilever = 100. Más alto = más caro que competencia</div></div><div class="chart-wrap" style="height:280px"><canvas id="chartPriceIndex"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Share Unilever vs Competencia</div><div class="ccard-sub">% participación de mercado por categoría</div></div><div class="ccard-legend"><div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div><div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp. principal</div></div></div><div class="chart-wrap" style="height:260px"><canvas id="cShareComp"></canvas></div></div>
+        <div class="ccard"><div class="ccard-hdr"><div><div class="ccard-title">Sell Out Unilever vs Competidor</div><div class="ccard-sub">₲ millones por categoría · Abr 2026</div></div><div class="ccard-legend"><div class="cl-item"><div class="cl-dot" style="background:var(--gold)"></div>Unilever</div><div class="cl-item"><div class="cl-dot" style="background:var(--silver)"></div>Comp.</div></div></div><div class="chart-wrap" style="height:260px"><canvas id="cSOComp"></canvas></div></div>
       </div>
     </div><!-- /competencia -->
-
-    <!-- ══════════════ CONFIG ══════════════ -->
-    <div class="section" id="sec-config">
-      <div class="page-header"><div><div class="page-title">⚙️ Configuración</div><div class="page-subtitle">Preferencias del sistema y cuenta</div></div></div>
-      <div class="config-section">
-        <div class="config-group">
-          <div class="config-group-title">Apariencia</div>
-          <div class="config-row">
-            <div class="config-label">Modo Oscuro / Claro<span id="theme-label-desc">Actualmente: Modo Noche 🌙</span></div>
-            <div class="toggle on" id="themeToggle" onclick="toggleTheme()"></div>
-          </div>
-        </div>
-        <div class="config-group">
-          <div class="config-group-title">Datos y Exportación</div>
-          <div class="config-row"><div class="config-label">Actualización en tiempo real<span>Simulación de datos cada 30s</span></div><div class="toggle on" id="realtimeToggle" onclick="this.classList.toggle('on')"></div></div>
-          <div class="config-row"><div class="config-label">Exportar PDF<span>Descarga versión ejecutiva del dashboard</span></div><button class="btn-export primary" onclick="alert('Generando PDF...')">📄 Generar PDF</button></div>
-          <div class="config-row"><div class="config-label">Exportar Excel<span>Descarga todos los datos en .xlsx</span></div><button class="btn-export" onclick="alert('Descargando Excel...')">📊 Descargar Excel</button></div>
-        </div>
-        <div class="config-group">
-          <div class="config-group-title">Acerca del Dashboard</div>
-          <div class="config-row"><div class="config-label">Versión<span>Dashboard Ejecutivo v3.0.0</span></div><span class="badge badge-blue">v3.0.0</span></div>
-          <div class="config-row"><div class="config-label">Categorías activas<span>Cuidado Personal · Condimentos · Limpieza · Alimentos</span></div><span class="badge badge-green">4 módulos</span></div>
-          <div class="config-row"><div class="config-label">Última sincronización<span>Hoy, Abr 2026</span></div><div class="live-dot">Actualizado</div></div>
-        </div>
-      </div>
-    </div><!-- /config -->
 
   </main>
 </div>
 
 <script>
-// ════ THEME ════
-let isDark = true;
+// ═══ SPLASH ═══
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+  }, 3000);
+});
+
+// ═══ THEME ═══
+let dark = true;
 function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = isDark ? '🌙 Modo Noche' : '☀️ Modo Día';
-  document.getElementById('themeToggle').classList.toggle('on', isDark);
-  document.getElementById('theme-label-desc').textContent = isDark ? 'Actualmente: Modo Noche 🌙' : 'Actualmente: Modo Día ☀️';
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = dark ? '◑ Noche' : '◑ Día';
 }
 
-// ════ NAVIGATION ════
+// ═══ NAV ═══
 function navTo(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
   const nav = document.getElementById('nav-' + id);
   if (nav) nav.classList.add('active');
-  const labels = {resumen:'Resumen Ejecutivo',cuidado:'Cuidado Personal',condimentos:'Condimentos',limpieza:'Limpieza',alimentos:'Alimentos',pricing:'Pricing',disponibilidad:'Disponibilidad',competencia:'Competencia',config:'Configuración'};
-  document.getElementById('badge-category').textContent = labels[id] || id;
+  const labels = {exec:'Performance Comercial',cuidado:'Cuidado Personal',condimentos:'Condimentos',limpieza:'Limpieza',alimentos:'Alimentos',pricing:'Pricing',competencia:'Competencia'};
+  document.getElementById('badge-section').textContent = labels[id] || id;
 }
 
-// ════ INFO TOOLTIP ════
-function showInfo(btn, title, text) {
-  // find the parent chart-card
-  const card = btn.closest('.chart-card');
+// ═══ INFO POPUP ═══
+function showInfo(btn) {
+  const card = btn.closest('.ccard');
   if (!card) return;
-  const overlay = card.querySelector('.info-overlay');
-  if (!overlay) return;
-  // update filter label
-  const filterLabel = overlay.querySelector('.info-overlay-filter');
-  if (filterLabel) filterLabel.textContent = 'Filtro activo: ' + getActiveFilterText();
-  overlay.classList.add('visible');
+  const popup = card.querySelector('.info-popup');
+  if (!popup) return;
+  // update filter text
+  popup.querySelectorAll('[id^="iff-"]').forEach(el => {
+    el.textContent = getFilterText();
+  });
+  popup.classList.add('vis');
 }
-function closeInfo(id) {
-  // find by button's parent
-  const overlays = document.querySelectorAll('.info-overlay.visible');
-  overlays.forEach(o => o.classList.remove('visible'));
+function closeInfo(btn) {
+  btn.closest('.info-popup').classList.remove('vis');
 }
-
-function getActiveFilterText() {
-  const parts = [];
-  const fecha = document.getElementById('f-fecha').value;
-  const cadena = document.getElementById('f-cadena').value;
-  const cat = document.getElementById('f-cat').value;
-  const ciudad = document.getElementById('f-ciudad').value;
-  const canal = document.getElementById('f-canal').value;
-  if (fecha) parts.push(fecha);
-  if (cadena) parts.push(cadena);
-  if (cat) parts.push(cat);
-  if (ciudad) parts.push(ciudad);
-  if (canal) parts.push(canal);
-  return parts.length ? parts.join(' · ') : 'Sin filtros activos — mostrando todo';
-}
-
-// close on click outside
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.chart-card')) return;
-  // only close if clicking outside overlay and not on info btn
-  if (e.target.classList.contains('info-btn') || e.target.closest('.info-overlay')) return;
-  document.querySelectorAll('.info-overlay.visible').forEach(o => o.classList.remove('visible'));
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ccard')) return;
+  if (e.target.classList.contains('info-btn') || e.target.closest('.info-popup')) return;
+  document.querySelectorAll('.info-popup.vis').forEach(p => p.classList.remove('vis'));
 });
 
-// ════ FILTERS ════
-// Data sets for different filter combinations
-const filterData = {
-  default: {
-    locales: 428, cadenas: 6, precioUni: '32.500', precioComp: '30.900', disp: 93, sellout: '4.173M', rot: 7.4, share: 38,
-    pricesUni: [30200,31000,31800,32500], pricesComp: [29000,29400,30000,30900],
-    selloutMes: [3580,3750,3920,4173],
-    dispChain: [97,96,95,94,87,92], topSucursales: [
-      {name:'SuperSeis Shopping del Sol',chain:'SuperSeis',score:'₲ 892M',bar:98},
-      {name:'CasaRica Mcal. López',chain:'CasaRica',score:'₲ 741M',bar:87},
-      {name:'SuperMás Aviadores',chain:'SuperMás',score:'₲ 698M',bar:82},
-      {name:'Stock Villa Morra',chain:'Stock',score:'₲ 615M',bar:72},
-      {name:'Areté San Lorenzo',chain:'Areté',score:'₲ 512M',bar:60},
-      {name:'Farmacias Asunción',chain:'Farmacias',score:'₲ 389M',bar:45},
-      {name:'SuperSeis Luque',chain:'SuperSeis',score:'₲ 326M',bar:38},
+function getFilterText() {
+  const parts = [];
+  const fs = ['f-fecha','f-cadena','f-cat','f-ciudad','f-canal'];
+  fs.forEach(id => { const v = document.getElementById(id).value; if (v) parts.push(v); });
+  return parts.length ? parts.join(' · ') : 'Sin filtros — mostrando todo';
+}
+
+// ═══ FILTER DATA ═══
+const FD = {
+  all: {
+    loc:428,cad:6,pvp:'32.500',pcomp:'30.900',so:'4.173M',sh:38,
+    priceUni:[30200,31000,31800,32500],priceComp:[29000,29400,30000,30900],
+    soMes:[3580,3750,3920,4173],
+    chainSO:[892,741,698,615,512,389],
+    tops:[
+      {n:'SuperSeis Shopping del Sol',c:'SuperSeis',v:'₲ 892M',b:100},
+      {n:'CasaRica Mcal. López',c:'CasaRica',v:'₲ 741M',b:83},
+      {n:'SuperMás Aviadores',c:'SuperMás',v:'₲ 698M',b:78},
+      {n:'Stock Villa Morra',c:'Stock',v:'₲ 615M',b:69},
+      {n:'Areté San Lorenzo',c:'Areté',v:'₲ 512M',b:57},
+      {n:'Farmacias Centro',c:'Farmacias',v:'₲ 389M',b:44},
+      {n:'SuperSeis Luque',c:'SuperSeis',v:'₲ 326M',b:37},
     ]
   },
-  SuperSeis: {
-    locales: 68, cadenas: 1, precioUni: '33.200', precioComp: '31.500', disp: 97, sellout: '892M', rot: 5.8, share: 44,
-    pricesUni: [31500,32100,32800,33200], pricesComp: [30000,30400,31000,31500],
-    selloutMes: [720,770,830,892],
-    dispChain: [99,98,97,97,96,97],
-    topSucursales: [
-      {name:'SuperSeis Shopping del Sol',chain:'SuperSeis',score:'₲ 312M',bar:98},
-      {name:'SuperSeis Mcal. López',chain:'SuperSeis',score:'₲ 248M',bar:78},
-      {name:'SuperSeis Luque',chain:'SuperSeis',score:'₲ 194M',bar:61},
-      {name:'SuperSeis Aviadores',chain:'SuperSeis',score:'₲ 138M',bar:43},
-    ]
-  },
-  CasaRica: {
-    locales: 52, cadenas: 1, precioUni: '32.100', precioComp: '30.400', disp: 89, sellout: '741M', rot: 8.9, share: 36,
-    pricesUni: [29800,30500,31200,32100], pricesComp: [28400,29000,29800,30400],
-    selloutMes: [590,640,680,741],
-    dispChain: [92,90,89,88,87,89],
-    topSucursales: [
-      {name:'CasaRica Mcal. López',chain:'CasaRica',score:'₲ 298M',bar:98},
-      {name:'CasaRica Fdo. de la Mora',chain:'CasaRica',score:'₲ 241M',bar:79},
-      {name:'CasaRica Lambaré',chain:'CasaRica',score:'₲ 202M',bar:66},
-    ]
-  },
-  Arete: {
-    locales: 41, cadenas: 1, precioUni: '31.500', precioComp: '29.900', disp: 91, sellout: '512M', rot: 9.2, share: 33,
-    pricesUni: [29200,30000,30800,31500], pricesComp: [27800,28500,29200,29900],
-    selloutMes: [390,420,470,512],
-    dispChain: [94,92,91,90,89,91],
-    topSucursales: [
-      {name:'Areté San Lorenzo',chain:'Areté',score:'₲ 218M',bar:98},
-      {name:'Areté Gran Asunción',chain:'Areté',score:'₲ 294M',bar:78},
-    ]
-  }
+  SuperSeis:{loc:68,cad:1,pvp:'33.200',pcomp:'31.500',so:'892M',sh:44,priceUni:[31500,32100,32800,33200],priceComp:[30000,30400,31000,31500],soMes:[720,770,830,892],chainSO:[892,0,0,0,0,0],
+    tops:[{n:'SuperSeis Shopping del Sol',c:'SuperSeis',v:'₲ 312M',b:100},{n:'SuperSeis Mcal. López',c:'SuperSeis',v:'₲ 248M',b:80},{n:'SuperSeis Luque',c:'SuperSeis',v:'₲ 194M',b:62},{n:'SuperSeis Aviadores',c:'SuperSeis',v:'₲ 138M',b:44}]},
+  'Casa Rica':{loc:52,cad:1,pvp:'32.100',pcomp:'30.400',so:'741M',sh:36,priceUni:[29800,30500,31200,32100],priceComp:[28400,29000,29800,30400],soMes:[590,640,680,741],chainSO:[0,741,0,0,0,0],
+    tops:[{n:'CasaRica Mcal. López',c:'CasaRica',v:'₲ 298M',b:100},{n:'CasaRica Fdo. de la Mora',c:'CasaRica',v:'₲ 241M',b:81},{n:'CasaRica Lambaré',c:'CasaRica',v:'₲ 202M',b:68}]},
+  Areté:{loc:41,cad:1,pvp:'31.500',pcomp:'29.900',so:'512M',sh:33,priceUni:[29200,30000,30800,31500],priceComp:[27800,28500,29200,29900],soMes:[390,420,470,512],chainSO:[0,0,0,0,512,0],
+    tops:[{n:'Areté San Lorenzo',c:'Areté',v:'₲ 218M',b:100},{n:'Areté Gran Asunción',c:'Areté',v:'₲ 294M',b:81}]},
 };
 
-let chartRefs = {};
+const CHAINS = ['SuperSeis','Casa Rica','Areté','SuperMás','Stock','Farmacias'];
+const M4 = ['Ene 2026','Feb 2026','Mar 2026','Abr 2026'];
 
-function getFilteredData() {
-  const cadena = document.getElementById('f-cadena').value;
-  return filterData[cadena] || filterData.default;
+let CR = {}; // chart refs
+
+function getData() {
+  const c = document.getElementById('f-cadena').value;
+  return FD[c] || FD.all;
 }
 
 function applyFilters() {
-  const data = getFilteredData();
-  // Update KPIs
-  animateValue('kv-locales', data.locales, '');
-  animateValue('kv-cadenas', data.cadenas, '');
-  document.getElementById('kv-precio-uni').innerHTML = '<span>₲</span> ' + data.precioUni;
-  document.getElementById('kv-precio-comp').innerHTML = '<span>₲</span> ' + data.precioComp;
-  document.getElementById('kv-disp').innerHTML = data.disp + '<span>%</span>';
-  document.getElementById('kv-sellout').innerHTML = '<span>₲</span> ' + data.sellout;
-  document.getElementById('kv-rot').innerHTML = data.rot + '<span> días</span>';
-  document.getElementById('kv-share').innerHTML = data.share + '<span>%</span>';
-
-  // Update charts
-  if (chartRefs.prices) {
-    chartRefs.prices.data.datasets[0].data = data.pricesUni;
-    chartRefs.prices.data.datasets[1].data = data.pricesComp;
-    chartRefs.prices.update();
-  }
-  if (chartRefs.sellout) {
-    chartRefs.sellout.data.datasets[0].data = data.selloutMes;
-    chartRefs.sellout.update();
-  }
-  if (chartRefs.disp) {
-    chartRefs.disp.data.datasets[0].data = data.dispChain;
-    chartRefs.disp.update();
-  }
-
-  // Update rank list
-  renderRank(data.topSucursales);
-
-  // Update subtitle
-  const cadena = document.getElementById('f-cadena').value;
-  const fecha = document.getElementById('f-fecha').value;
-  const ciudad = document.getElementById('f-ciudad').value;
-  const cat = document.getElementById('f-cat').value;
-  let parts = [];
-  if (cadena) parts.push(cadena); else parts.push('Todas las cadenas');
-  if (fecha) parts.push(fecha); else parts.push('Ene–Abr 2026');
-  if (ciudad) parts.push(ciudad);
-  if (cat) parts.push(cat);
-  document.getElementById('resumen-subtitle').textContent = parts.join(' · ');
-
+  const d = getData();
+  // Update exec KPIs
+  document.getElementById('kv-loc').textContent = d.loc;
+  document.getElementById('kv-cad').textContent = d.cad;
+  document.getElementById('kv-pvp').innerHTML = '<small>₲</small> ' + d.pvp;
+  document.getElementById('kv-pcomp').innerHTML = '<small>₲</small> ' + d.pcomp;
+  document.getElementById('kv-so').innerHTML = '<small>₲</small> ' + d.so;
+  document.getElementById('kv-sh').innerHTML = d.sh + '<small>%</small>';
+  // Update chart data
+  if (CR.prices) { CR.prices.data.datasets[0].data = d.priceUni; CR.prices.data.datasets[1].data = d.priceComp; CR.prices.update(); }
+  if (CR.sellout) { CR.sellout.data.datasets[0].data = d.soMes; CR.sellout.update(); }
+  if (CR.dispChain) { CR.dispChain.data.datasets[0].data = d.chainSO; CR.dispChain.update(); }
+  // Update top sucursales
+  renderRank(d.tops);
+  // Update subtitles
+  const ft = getFilterText();
+  document.getElementById('exec-sub').textContent = ft === 'Sin filtros — mostrando todo' ? 'Todas las categorías · Ene–Abr 2026' : ft;
+  document.getElementById('top-sub').textContent = 'Sell out total en ₲ · ' + (document.getElementById('f-cadena').value || 'Todas las cadenas');
+  document.getElementById('alerts-sub').textContent = ft === 'Sin filtros — mostrando todo' ? 'Actualizadas según filtros' : 'Filtro: ' + ft;
   // Update filter chips
-  updateFilterChips();
-}
-
-function animateValue(id, val, suffix) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = val + suffix;
-}
-
-function updateFilterChips() {
-  const filters = [
-    {id:'f-fecha', label:'Fecha'},
-    {id:'f-cadena', label:'Cadena'},
-    {id:'f-cat', label:'Categoría'},
-    {id:'f-ciudad', label:'Ciudad'},
-    {id:'f-canal', label:'Canal'},
-  ];
-  const chips = [];
-  filters.forEach(f => {
-    const val = document.getElementById(f.id).value;
-    if (val) chips.push(`<span class="filter-chip">${f.label}: ${val}</span>`);
+  updateChips();
+  // Update category subtitles
+  ['cuidado','condimentos','limpieza','alimentos','pricing'].forEach(id => {
+    const el = document.getElementById('sub-' + id);
+    if (el && ft !== 'Sin filtros — mostrando todo') el.textContent = 'Análisis por subcategoría · ' + ft;
   });
-  const summary = document.getElementById('filterSummary');
-  const chipsEl = document.getElementById('filterChips');
-  if (chips.length) {
-    summary.classList.add('has-filters');
-    chipsEl.innerHTML = chips.join('');
+  // Update cuidado KPIs if cadena filter
+  const cadena = document.getElementById('f-cadena').value;
+  if (cadena === 'SuperSeis') {
+    document.getElementById('cp-so').innerHTML = '<small>₲</small> 6.240M';
+    document.getElementById('cp-u').innerHTML = '188<small>K</small>';
+    document.getElementById('cp-pvp').innerHTML = '<small>₲</small> 33.200';
+    document.getElementById('cp-sh').innerHTML = '44<small>%</small>';
+    document.getElementById('cp-loc').textContent = '68';
+  } else if (cadena === 'Casa Rica') {
+    document.getElementById('cp-so').innerHTML = '<small>₲</small> 4.820M';
+    document.getElementById('cp-u').innerHTML = '<small>₲</small> 150<small>K</small>';
+    document.getElementById('cp-pvp').innerHTML = '<small>₲</small> 32.100';
+    document.getElementById('cp-sh').innerHTML = '36<small>%</small>';
+    document.getElementById('cp-loc').textContent = '52';
   } else {
-    summary.classList.remove('has-filters');
-    chipsEl.innerHTML = '';
+    document.getElementById('cp-so').innerHTML = '<small>₲</small> 13.390M';
+    document.getElementById('cp-u').innerHTML = '412<small>K</small>';
+    document.getElementById('cp-pvp').innerHTML = '<small>₲</small> 32.500';
+    document.getElementById('cp-sh').innerHTML = '38<small>%</small>';
+    document.getElementById('cp-loc').textContent = '428';
   }
+}
+
+function updateChips() {
+  const fs = [{id:'f-fecha',l:'Fecha'},{id:'f-cadena',l:'Cadena'},{id:'f-cat',l:'Categoría'},{id:'f-ciudad',l:'Ciudad'},{id:'f-canal',l:'Canal'}];
+  const chips = fs.filter(f => document.getElementById(f.id).value).map(f => `<span class="af-chip">${f.l}: ${document.getElementById(f.id).value}</span>`);
+  const bar = document.getElementById('afBar');
+  document.getElementById('afChips').innerHTML = chips.join('');
+  chips.length ? bar.classList.add('show') : bar.classList.remove('show');
 }
 
 function resetFilters() {
-  ['f-fecha','f-cadena','f-cat','f-ciudad','f-canal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+  ['f-fecha','f-cadena','f-cat','f-ciudad','f-canal'].forEach(id => { document.getElementById(id).value = ''; });
   applyFilters();
 }
 
-// ════ RANK LIST ════
-function renderRank(data) {
-  document.getElementById('rankList').innerHTML = data.map((r,i) => `
-    <div class="rank-item">
-      <div class="rank-num">${i+1}</div>
-      <div class="rank-info">
-        <div class="rank-name">${r.name}</div>
-        <div class="rank-chain">${r.chain}</div>
-        <div class="progress-bar" style="margin-top:4px"><div class="progress-fill green" style="width:${r.bar}%"></div></div>
+// ═══ RANK ═══
+function renderRank(tops) {
+  document.getElementById('rankList').innerHTML = tops.map((r,i) => `
+    <div class="rank-row">
+      <div class="rn">${String(i+1).padStart(2,'0')}</div>
+      <div class="rinfo">
+        <div class="rname">${r.n}</div>
+        <div class="rchain">${r.c}</div>
+        <div class="pbar" style="margin-top:3px"><div class="pfill pf-b" style="width:${r.b}%"></div></div>
       </div>
-      <div class="rank-score">${r.score}</div>
+      <div class="rscore">${r.v}</div>
     </div>`).join('');
 }
-renderRank(filterData.default.topSucursales);
+renderRank(FD.all.tops);
 
-// ════ CHART HELPERS ════
-function getC() {
-  const light = document.documentElement.getAttribute('data-theme') === 'light';
-  return {grid:light?'rgba(0,0,0,0.07)':'rgba(255,255,255,0.06)',text:light?'#4a5580':'#8892aa',tb:light?'#fff':'#161b2e',tbd:light?'rgba(31,54,199,0.2)':'rgba(0,210,255,0.25)'};
-}
-const M4 = ['Ene 2026','Feb 2026','Mar 2026','Abr 2026'];
-function baseOpts(ex) {
-  const c = getC();
-  return {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:c.tb,borderColor:c.tbd,borderWidth:1,titleColor:c.text,bodyColor:'#f0f4ff',padding:10}},scales:{x:{grid:{color:c.grid},ticks:{color:c.text,font:{size:11}},...(ex&&ex.x)},y:{grid:{color:c.grid},ticks:{color:c.text,font:{size:11}},...(ex&&ex.y)}}};
-}
-function withLegend(o) {
-  return {...o,plugins:{...o.plugins,legend:{display:true,labels:{color:getC().text,usePointStyle:true,font:{size:11},padding:10}}}};
-}
-
-const data0 = filterData.default;
-
-// 1. Prices
-chartRefs.prices = new Chart(document.getElementById('chartPrices'),{
-  type:'line',
-  data:{labels:M4,datasets:[
-    {label:'Unilever',data:[...data0.pricesUni],borderColor:'#1f36c7',backgroundColor:'rgba(31,54,199,0.1)',borderWidth:2.5,tension:0.4,fill:true,pointBackgroundColor:'#1f36c7',pointRadius:4,pointHoverRadius:6},
-    {label:'Competencia',data:[...data0.pricesComp],borderColor:'#ff6b8a',backgroundColor:'rgba(255,107,138,0.08)',borderWidth:2.5,tension:0.4,fill:true,borderDash:[5,3],pointBackgroundColor:'#ff6b8a',pointRadius:4,pointHoverRadius:6}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 2. Pie
-new Chart(document.getElementById('chartPie'),{
-  type:'doughnut',
-  data:{labels:['Jabones','Desodorantes','Shampoo','Crema Dental','Cremas Corp.'],datasets:[{data:[77,71,64,58,42],backgroundColor:['#00e6a0','#00d2ff','#a78bfa','#ffc94d','#ff6b8a'],borderWidth:0,hoverOffset:8}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:getC().text,font:{size:11},usePointStyle:true,padding:12}},tooltip:{backgroundColor:getC().tb,borderColor:getC().tbd,borderWidth:1,bodyColor:'#f0f4ff'}}}
-});
-
-// 3. Disp
-const CHAINS = ['SuperSeis','CasaRica','Areté','SuperMás','Stock','Farmacias'];
-chartRefs.disp = new Chart(document.getElementById('chartDisp'),{
-  type:'bar',
-  data:{labels:CHAINS,datasets:[{data:[...data0.dispChain],backgroundColor:ctx=>ctx.raw>=95?'#00e6a0':ctx.raw>=90?'#00d2ff':'#ffc94d',borderRadius:6}]},
-  options:{...baseOpts({x:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10}},min:80,max:100},y:{grid:{display:false},ticks:{color:getC().text,font:{size:10}}}}),indexAxis:'y'}
-});
-
-// 4. Sellout (₲ monto)
-chartRefs.sellout = new Chart(document.getElementById('chartSellout'),{
-  type:'bar',
-  data:{labels:M4,datasets:[{label:'Monto ₲ (millones)',data:[...data0.selloutMes],backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(31,54,199,0.9)');g.addColorStop(1,'rgba(0,210,255,0.4)');return g},borderRadius:6}]},
-  options:{...baseOpts(),plugins:{...baseOpts().plugins,tooltip:{...baseOpts().plugins.tooltip,callbacks:{label:ctx=>`₲ ${ctx.raw}M`}}}}
-});
-
-// 5. Subcat sellout vs comp
-new Chart(document.getElementById('chartSubcatSellout'),{
-  type:'bar',
-  data:{labels:['Jabones','Desodorantes','Shampoo','Crema Dental','Cremas Corp.'],datasets:[
-    {label:'Unilever (₲)',data:[993,2122,2336,1421,1722],backgroundColor:'rgba(31,54,199,0.85)',borderRadius:4},
-    {label:'Competidor (₲)',data:[782,1710,2578,1189,1897],backgroundColor:'rgba(255,107,138,0.7)',borderRadius:4}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 6. Disp evol
-new Chart(document.getElementById('chartDispEvol'),{
-  type:'line',
-  data:{labels:M4,datasets:[
-    {label:'Jabones',data:[94,95,96,95],borderColor:'#00e6a0',borderWidth:2,tension:0.4,fill:false,pointRadius:3},
-    {label:'Desodorantes',data:[92,93,94,94],borderColor:'#00d2ff',borderWidth:2,tension:0.4,fill:false,pointRadius:3},
-    {label:'Shampoo',data:[91,91,92,92],borderColor:'#a78bfa',borderWidth:2,tension:0.4,fill:false,pointRadius:3},
-    {label:'Crema Dental',data:[95,95,96,96],borderColor:'#ffc94d',borderWidth:2,tension:0.4,fill:false,pointRadius:3},
-    {label:'Cremas Corp.',data:[89,90,91,91],borderColor:'#ff6b8a',borderWidth:2,tension:0.4,fill:false,pointRadius:3}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 7. Price SKU
-new Chart(document.getElementById('chartPriceSKU'),{
-  type:'scatter',
-  data:{datasets:[
-    {label:'Unilever',data:[{x:11900,y:1},{x:32500,y:2},{x:18900,y:3},{x:34900,y:4},{x:45900,y:5},{x:28900,y:6}],backgroundColor:'rgba(31,54,199,0.8)',pointRadius:8},
-    {label:'Competencia',data:[{x:10500,y:1},{x:31000,y:2},{x:19500,y:3},{x:36200,y:4},{x:41000,y:5},{x:27500,y:6}],backgroundColor:'rgba(255,107,138,0.8)',pointRadius:8}
-  ]},
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:getC().text,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:getC().tb,borderColor:getC().tbd,borderWidth:1,bodyColor:'#f0f4ff'}},scales:{x:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10}},title:{display:true,text:'Precio (₲)',color:getC().text}},y:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10},callback:v=>['','Dove Jabón','Rexona','Close Up','Sedal','Dove Corp.','Axe'][v]||v},min:0,max:7}}}
-});
-
-// 8. Price chain
-new Chart(document.getElementById('chartPriceChain'),{
-  type:'bar',
-  data:{labels:CHAINS,datasets:[
-    {label:'Unilever',data:[33200,32100,31500,32800,31900,29800],backgroundColor:'rgba(31,54,199,0.8)',borderRadius:4},
-    {label:'Competencia',data:[31500,30400,29900,31200,30100,28200],backgroundColor:'rgba(255,107,138,0.7)',borderRadius:4}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 9. OSA
-new Chart(document.getElementById('chartOSA'),{
-  type:'bar',
-  data:{labels:CHAINS,datasets:[{data:[97,89,91,95,92,88],backgroundColor:d=>d.raw>=95?'#00e6a0':d.raw>=90?'#00d2ff':'#ffc94d',borderRadius:6}]},
-  options:{...baseOpts({x:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10}},min:80,max:100},y:{grid:{display:false},ticks:{color:getC().text,font:{size:10}}}}),indexAxis:'y'}
-});
-
-// 10. Quiebres
-new Chart(document.getElementById('chartQuiebres'),{
-  type:'doughnut',
-  data:{labels:['Shampoo','Cremas Corp.','Desodorantes','Jabones','Crema Dental'],datasets:[{data:[9,5,4,3,2],backgroundColor:['#ff6b8a','#ffc94d','#a78bfa','#00d2ff','#00e6a0'],borderWidth:0,hoverOffset:8}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{color:getC().text,font:{size:11},usePointStyle:true,padding:10}},tooltip:{backgroundColor:getC().tb,borderColor:getC().tbd,borderWidth:1,bodyColor:'#f0f4ff'}}}
-});
-
-// 11. Condimentos ventas
-new Chart(document.getElementById('chartCondVentas'),{
-  type:'bar',
-  data:{labels:M4,datasets:[
-    {label:'Unilever (₲)',data:[1180000,1245000,1348000,1600000],backgroundColor:'rgba(255,201,77,0.85)',borderRadius:4},
-    {label:'Competencia (₲)',data:[1050000,1100000,1200000,1350000],backgroundColor:'rgba(255,107,138,0.6)',borderRadius:4}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 12. Cond pie
-new Chart(document.getElementById('chartCondPie'),{
-  type:'doughnut',
-  data:{labels:['Mayonesa','Ketchup','Salsas esp.','Mostaza'],datasets:[{data:[64,48,38,36],backgroundColor:['#ffc94d','#ff6b8a','#00d2ff','#00e6a0'],borderWidth:0,hoverOffset:8}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{color:getC().text,font:{size:11},usePointStyle:true,padding:10}},tooltip:{backgroundColor:getC().tb,borderColor:getC().tbd,borderWidth:1,bodyColor:'#f0f4ff'}}}
-});
-
-// 13. Limpieza ventas
-new Chart(document.getElementById('chartLimpVentas'),{
-  type:'line',
-  data:{labels:M4,datasets:[
-    {label:'Detergente',data:[3200000,3450000,3680000,3775000],borderColor:'#00e6a0',backgroundColor:'rgba(0,230,160,0.1)',borderWidth:2,tension:0.4,fill:true,pointRadius:3},
-    {label:'Suavizante',data:[2500000,2620000,2740000,2849000],borderColor:'#00d2ff',backgroundColor:'rgba(0,210,255,0.06)',borderWidth:2,tension:0.4,fill:true,pointRadius:3}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 14. Limp disp
-new Chart(document.getElementById('chartLimpDisp'),{
-  type:'bar',
-  data:{labels:CHAINS,datasets:[{data:[93,87,90,91,88,84],backgroundColor:ctx=>ctx.raw>=90?'#00e6a0':ctx.raw>=87?'#00d2ff':'#ffc94d',borderRadius:6}]},
-  options:baseOpts()
-});
-
-// 15. Alimentos ventas
-new Chart(document.getElementById('chartAlimVentas'),{
-  type:'bar',
-  data:{labels:M4,datasets:[{label:'Monto ₲',data:[1100000,1180000,1280000,1440000],backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(167,139,250,0.9)');g.addColorStop(1,'rgba(0,210,255,0.4)');return g},borderRadius:6}]},
-  options:baseOpts()
-});
-
-// 16. Alim pie
-new Chart(document.getElementById('chartAlimPie'),{
-  type:'doughnut',
-  data:{labels:['Caldos Knorr','Sopas inst.','Margarinas','Aderezos'],datasets:[{data:[82,58,48,36],backgroundColor:['#a78bfa','#00d2ff','#ffc94d','#ff6b8a'],borderWidth:0,hoverOffset:8}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{color:getC().text,font:{size:11},usePointStyle:true,padding:10}},tooltip:{backgroundColor:getC().tb,borderColor:getC().tbd,borderWidth:1,bodyColor:'#f0f4ff'}}}
-});
-
-// 17. Share vs competencia (competencia page)
-new Chart(document.getElementById('chartShareComp'),{
-  type:'bar',
-  data:{labels:['Jabones','Deso.','Shampoo','Crema Corp.','Crema Dental','Mayonesa','Detergente','Caldos'],datasets:[
-    {label:'Unilever',data:[48,42,28,38,34,44,41,39],backgroundColor:'rgba(31,54,199,0.85)',borderRadius:4},
-    {label:'Competencia principal',data:[32,31,36,44,41,38,35,34],backgroundColor:'rgba(255,107,138,0.7)',borderRadius:4}
-  ]},
-  options:withLegend(baseOpts())
-});
-
-// 18. Price index
-new Chart(document.getElementById('chartPriceIndex'),{
-  type:'bar',
-  data:{labels:['Jabones','Deso.','Shampoo','Crema Corp.','Crema Dental','Mayonesa','Detergente','Caldos'],datasets:[{
-    data:[112,105,96,104,107,104,96,108],
-    backgroundColor:d=>d.raw>100?'rgba(31,54,199,0.8)':'rgba(255,107,138,0.7)',
-    borderRadius:6
-  }]},
-  options:{...baseOpts(),plugins:{...baseOpts().plugins,annotation:{}},scales:{x:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10}}},y:{grid:{color:getC().grid},ticks:{color:getC().text,font:{size:10}},min:88,max:115}}}
-});
-
-// ════ LIVE CLOCK ════
-function liveUpdate() {
+// ═══ LIVE CLOCK ═══
+function tick() {
   const d = new Date();
   const el = document.getElementById('live-time');
-  if(el) el.textContent = `En vivo · ${d.toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'})}`;
+  if (el) el.textContent = `En vivo · ${d.toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'})}`;
 }
-liveUpdate(); setInterval(liveUpdate,60000);
+tick(); setInterval(tick, 60000);
+
+// ═══ CHARTS ═══
+function gc() {
+  const l = document.documentElement.getAttribute('data-theme') === 'light';
+  return {gr:l?'rgba(0,0,0,0.06)':'rgba(255,255,255,0.05)',tx:l?'#4a5870':'#8a9ab5',tb:l?'#edebe5':'#191d27',tbd:l?'rgba(140,100,40,0.3)':'rgba(182,150,90,0.3)'};
+}
+function base(ex) {
+  const c = gc();
+  return {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:c.tb,borderColor:c.tbd,borderWidth:1,titleColor:c.tx,bodyColor:'#e8ecf4',padding:10}},scales:{x:{grid:{color:c.gr},ticks:{color:c.tx,font:{size:10,family:'Barlow Condensed'}},...(ex&&ex.x)},y:{grid:{color:c.gr},ticks:{color:c.tx,font:{size:10,family:'Barlow Condensed'}},...(ex&&ex.y)}}};
+}
+function withLeg(o) {
+  return {...o,plugins:{...o.plugins,legend:{display:true,labels:{color:gc().tx,usePointStyle:true,font:{size:10,family:'Barlow Condensed'},pointStyleWidth:8,padding:12}}}};
+}
+
+const d0 = FD.all;
+const G='#b6965a',S='#8a9ab5',G2='rgba(182,150,90,0.15)',S2='rgba(138,154,181,0.15)';
+
+// 1 Prices
+CR.prices = new Chart(document.getElementById('cPrices'),{type:'line',data:{labels:M4,datasets:[
+  {label:'Unilever',data:[...d0.priceUni],borderColor:G,backgroundColor:G2,borderWidth:2,tension:.4,fill:true,pointBackgroundColor:G,pointRadius:3,pointHoverRadius:5},
+  {label:'Competencia',data:[...d0.priceComp],borderColor:S,backgroundColor:S2,borderWidth:1.5,tension:.4,fill:true,borderDash:[4,3],pointBackgroundColor:S,pointRadius:3,pointHoverRadius:5}
+]},options:withLeg(base())});
+
+// 2 Pie
+new Chart(document.getElementById('cPie'),{type:'doughnut',data:{labels:['Jabones','Desodorantes','Shampoo','Crema Dental','Cremas Corp.'],datasets:[{data:[77,71,64,58,42],backgroundColor:['#27ae60','#b6965a','#8a9ab5','#d4861a','#c0392b'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:gc().tx,font:{size:10,family:'Barlow Condensed'},usePointStyle:true,padding:10}},tooltip:{backgroundColor:gc().tb,borderColor:gc().tbd,borderWidth:1,bodyColor:'#e8ecf4'}}}});
+
+// 3 Sellout mensual
+CR.sellout = new Chart(document.getElementById('cSellout'),{type:'bar',data:{labels:M4,datasets:[{label:'Sell Out ₲M',data:[...d0.soMes],backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,180);g.addColorStop(0,'rgba(182,150,90,0.9)');g.addColorStop(1,'rgba(182,150,90,0.2)');return g},borderRadius:2}]},options:{...base(),plugins:{...base().plugins,tooltip:{...base().plugins.tooltip,callbacks:{label:ctx=>`₲ ${ctx.raw}M`}}}}});
+
+// 4 Chain sellout
+CR.dispChain = new Chart(document.getElementById('cDispChain'),{type:'bar',data:{labels:CHAINS,datasets:[{data:[...d0.chainSO],backgroundColor:ctx=>ctx.raw>700?'#b6965a':ctx.raw>500?'#d4b07a':'#8a9ab5',borderRadius:2}]},options:{...base(),indexAxis:'y',scales:{x:{...base().scales.x,ticks:{...base().scales.x.ticks,callback:v=>`₲${v}M`}},y:{...base().scales.y,grid:{display:false}}}}});
+
+// 5 Cuidado bars
+new Chart(document.getElementById('cCuidadoBars'),{type:'bar',data:{labels:['Jabones','Deso.','Shampoo','Crema Dental','Cremas Corp.'],datasets:[{label:'Unilever (₲M)',data:[993,2122,2336,1421,1722],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Competidor (₲M)',data:[782,1710,2578,1189,1897],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 6 Cuidado line
+new Chart(document.getElementById('cCuidadoLine'),{type:'line',data:{labels:M4,datasets:[{label:'Sell Out ₲M',data:[10800,11500,12300,13390],borderColor:G,backgroundColor:G2,borderWidth:2,tension:.4,fill:true,pointBackgroundColor:G,pointRadius:3}]},options:withLeg(base())});
+
+// 7 Cond bars
+new Chart(document.getElementById('cCondBars'),{type:'bar',data:{labels:['Mayonesa','Ketchup','Salsas','Mostaza'],datasets:[{label:'Unilever',data:[2080,1195,1110,713],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Competidor',data:[1622,1378,856,642],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 8 Cond line
+new Chart(document.getElementById('cCondLine'),{type:'line',data:{labels:M4,datasets:[{label:'Sell Out ₲M',data:[4100,4500,4980,5373],borderColor:G,backgroundColor:G2,borderWidth:2,tension:.4,fill:true,pointBackgroundColor:G,pointRadius:3}]},options:withLeg(base())});
+
+// 9 Limp bars
+new Chart(document.getElementById('cLimpBars'),{type:'bar',data:{labels:['Detergente','Suavizante','Desinfect.','Lavandina'],datasets:[{label:'Unilever',data:[3775,2849,2444,982],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Competidor',data:[3115,3077,2017,1198],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 10 Limp line
+new Chart(document.getElementById('cLimpLine'),{type:'line',data:{labels:M4,datasets:[{label:'Sell Out ₲M',data:[8200,9100,10200,11388],borderColor:G,backgroundColor:G2,borderWidth:2,tension:.4,fill:true,pointBackgroundColor:G,pointRadius:3}]},options:withLeg(base())});
+
+// 11 Alim bars
+new Chart(document.getElementById('cAlimBars'),{type:'bar',data:{labels:['Caldos','Sopas','Margarinas','Aderezos'],datasets:[{label:'Unilever',data:[1222,1114,1368,896],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Competidor',data:[1063,1249,1179,957],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 12 Alim line
+new Chart(document.getElementById('cAlimLine'),{type:'line',data:{labels:M4,datasets:[{label:'Sell Out ₲M',data:[3800,4200,4620,5018],borderColor:G,backgroundColor:G2,borderWidth:2,tension:.4,fill:true,pointBackgroundColor:G,pointRadius:3}]},options:withLeg(base())});
+
+// 13 Price SKU
+new Chart(document.getElementById('cPriceSKU'),{type:'bar',data:{labels:['Dove Jabón','Rexona Aero','Close Up','Sedal','Dove Corp.','Axe','Hellmann\'s'],datasets:[{label:'Unilever ₲',data:[11900,32500,18900,34900,45900,28900,32500],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Comp. ₲',data:[10500,31000,19500,36200,41000,27500,31200],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 14 Price index
+new Chart(document.getElementById('cPriceIdx'),{type:'bar',data:{labels:['Jabones','Deso.','Shampoo','Cremas Corp.','Crema Dental','Condimentos','Detergentes','Caldos'],datasets:[{data:[112,105,96,104,107,104,96,108],backgroundColor:d=>d.raw>100?'rgba(182,150,90,0.85)':'rgba(192,57,43,0.7)',borderRadius:2}]},options:{...base(),scales:{x:{...base().scales.x},y:{...base().scales.y,min:88,max:115}}}});
+
+// 15 Share comp
+new Chart(document.getElementById('cShareComp'),{type:'bar',data:{labels:['Jabones','Deso.','Shampoo','Crema Corp.','Crema Dental','Condimentos','Deterg.','Caldos'],datasets:[{label:'Unilever %',data:[48,42,28,38,34,44,41,39],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Comp. principal %',data:[32,31,36,44,41,38,35,34],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
+
+// 16 SO comp
+new Chart(document.getElementById('cSOComp'),{type:'bar',data:{labels:['C. Personal','Condimentos','Limpieza','Alimentos'],datasets:[{label:'Unilever ₲M',data:[13390,5373,11388,5018],backgroundColor:'rgba(182,150,90,0.85)',borderRadius:2},{label:'Competidor ₲M',data:[14200,4900,11600,5400],backgroundColor:'rgba(138,154,181,0.6)',borderRadius:2}]},options:withLeg(base())});
 </script>
 </body>
 </html>
